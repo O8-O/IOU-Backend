@@ -1,0 +1,24 @@
+{
+  "name": "iou-backend",
+  "version": "1.0.0",
+  "description": "IOU ( Interior On You ) 의 Back end Server Project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/O8-O/IOU-Backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/O8-O/IOU-Backend/issues"
+  },
+  "homepage": "https://github.com/O8-O/IOU-Backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5"
+  }
+}
