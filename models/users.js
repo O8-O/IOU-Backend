@@ -15,12 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         salt: {
             type: DataTypes.STRING
-        },        
-        createdAt: {
-            type: DataTypes.DATETIME
-        },
-        updatedAt: {
-            type: DataTypes.DATETIME
         }
     });
     return user;
