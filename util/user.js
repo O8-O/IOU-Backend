@@ -1,4 +1,5 @@
-const crypto = require('crypto')
+const crypto = require('crypto');
+const db = require('../models');
 
 function encryptPW(pw, callback){
     var salt = Math.round((new Date().valueOf()*Math.random())) + "";
@@ -7,6 +8,25 @@ function encryptPW(pw, callback){
     return callback(null, hashPassword, salt);
 }
 
+function findUserByID(id){
+    db.users.findOne({
+        where:{
+            ID: id
+        }
+    })
+    .then(result => {
+        console.log(result.dataValues);
+        if(!result){
+            return false;
+        }
+        return true;
+    })
+    .catch(err => {
+        return false;
+    })
+}
+
 module.exports = {
-    encryptPW: encryptPW
+    encryptPW: encryptPW,
+    findUserByID: findUserByID
 }

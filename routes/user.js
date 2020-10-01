@@ -7,18 +7,24 @@ router.post('/sign_up', (req, res, next) => {
     var body = req.body;
     
     user.encryptPW(body.password, (err, password, saltMade) => {
-        models.users.create({
-            ID: body.id,
-            PW: password,
-            email: body.email,
-            salt: saltMade
-        })
-        .then(result => {
-            res.json({"result": true});
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        if(user.findUserByID(body.id)){
+            models.users.create({
+                ID: body.id,
+                PW: password,
+                email: body.email,
+                salt: saltMade
+            })
+            .then(result => {
+                return res.json({"result": true});
+            })
+            .catch(err => {
+                console.log(err);
+                return next(err);
+            })
+        }   
+        else{
+            return next(err);
+        }     
     })    
 });
 
