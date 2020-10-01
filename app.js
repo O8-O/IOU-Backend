@@ -10,6 +10,11 @@ models.sequelize.sync().then(() => {
     console.log(err);
 });
 
+app.use(express.json());
+app.use('/user', require('./routes/user'));
+
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`)
 });
+
+module.exports = app;
