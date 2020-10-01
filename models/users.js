@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         PW: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING.BINARY,
             allowNull: false
         },
         email: {

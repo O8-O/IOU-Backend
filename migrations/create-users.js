@@ -8,11 +8,11 @@ module.exports = {
                 primaryKey: true
             },
             PW: {
-                type: Sequelize.STRING(20),
+                type: Sequelize.STRING,
                 allowNull: false
             },
             email: {
-                type: Sequelize.STRING(20),
+                type: Sequelize.STRING(30),
                 allowNull: false
             },
             salt: {
