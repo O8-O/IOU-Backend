@@ -8,21 +8,20 @@ function encryptPW(pw, callback){
     return callback(null, hashPassword, salt);
 }
 
-function findUserByID(id){
+function findUserByID(id, callback){
     db.users.findOne({
         where:{
             ID: id
         }
     })
     .then(result => {
-        console.log(result.dataValues);
         if(!result){
-            return false;
+            return callback(err);
         }
-        return true;
+        return callback(null, result.dataValues);
     })
     .catch(err => {
-        return false;
+        return callback(err);
     })
 }
 
