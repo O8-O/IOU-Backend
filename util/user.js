@@ -25,7 +25,29 @@ function findUserByID(id, callback){
     })
 }
 
+function doLogin(id, pw, callback){
+    findUserByID(id, (err, result) => {
+        if(err){
+            return callback(err);
+        }
+        var hashPassword = crypto.createHash('sha512').update(pw + result.salt).digest("hex");
+        if(hashPassword == result.pw){
+            return callback(null, result);
+        }
+        return callback(err);
+    })
+}
+
+function loginCheck(session, callback){
+    if(session.id){
+        return callback(null);
+    }
+    return callback(err);
+}
+
 module.exports = {
     encryptPW: encryptPW,
-    findUserByID: findUserByID
+    findUserByID: findUserByID,
+    doLogin: doLogin,
+    loginCheck: loginCheck
 }

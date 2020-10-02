@@ -2,6 +2,7 @@ var express = require('express')
 var app = express()
 var port = 3000
 const models = require('./models/index');
+const session = require('express-session');
 
 models.sequelize.sync().then(() => {
     console.log("DB 연결 성공");
@@ -11,6 +12,16 @@ models.sequelize.sync().then(() => {
 });
 
 app.use(express.json());
+app.use(session({
+    key: 'sid',
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 24000 * 60 * 60
+    }
+}));
+
 app.use('/user', require('./routes/user'));
 
 app.listen(port, () => {

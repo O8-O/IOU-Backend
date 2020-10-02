@@ -24,4 +24,31 @@ router.post('/sign_in', (req, res, next) => {
     });    
 });
 
+router.get('/log_in', (req, res, next) => {
+    var session = req.session;
+    user.loginCheck(session, (err, result) => {
+       if(err){
+           return next(err);
+       }
+       return res.json({"result": true});
+   })
+});
+
+router.post('/log_in', (req, res, next) => {
+    var body = req.body;
+    
+    user.doLogin(body.id, body.password, (err, result) => {        
+        if(err){
+            return next(err);
+        }        
+        req.session.id = body.id;
+        return res.json({"result": true});
+    })
+
+});
+
+// router.get('/log_out', (req, res, next) => {
+
+// });
+
 module.exports = router;
