@@ -20,11 +20,12 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 24000 * 60 * 60
+      maxAge: 24000 * 60 * 60 // 24 hour
     }
 }));
 
 app.use('/user', require('./routes/user'));
+
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`)
 });

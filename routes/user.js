@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 const user = require('../util/user');
+const cookieParser = require('cookie-parser');
 
 router.post('/sign_in', (req, res, next) => {
     var body = req.body;
@@ -35,7 +36,7 @@ router.get('/log_in', (req, res, next) => {
 
 router.post('/log_in', (req, res, next) => {
     var body = req.body;
-
+    
     user.doLogin(body.id, body.password, (err, result) => {        
         if(err){
             return next(err);
@@ -52,7 +53,6 @@ router.get('/log_out', (req, res, next) => {
             return res.json({"result": false});
         }
         req.session.destroy;
-        res.clearCookie('sid');
         req.session.login = false;
         return res.json({"result": true});  
     }
