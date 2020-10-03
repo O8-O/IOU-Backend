@@ -3,6 +3,7 @@ var app = express()
 var port = 3000
 const models = require('./models/index');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 models.sequelize.sync().then(() => {
     console.log("DB 연결 성공");
@@ -12,6 +13,7 @@ models.sequelize.sync().then(() => {
 });
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(session({
     key: 'sid',
     secret: 'secret',
@@ -23,7 +25,6 @@ app.use(session({
 }));
 
 app.use('/user', require('./routes/user'));
-
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`)
 });

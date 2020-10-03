@@ -39,10 +39,11 @@ function doLogin(id, pw, callback){
 }
 
 function loginCheck(session, callback){
-    if(session.id){
-        return callback(null);
-    }
-    return callback(err);
+    if(!session.login){
+        err = new Error;
+        return callback(err);
+    }    
+    return callback(null);
 }
 
 module.exports = {
