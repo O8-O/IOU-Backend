@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 const user = require('../util/user');
+const cookieParser = require('cookie-parser');
 
 router.post('/sign_in', (req, res, next) => {
     var body = req.body;
@@ -22,6 +23,42 @@ router.post('/sign_in', (req, res, next) => {
             })
         }); 
     });    
+});
+
+router.get('/log_in', (req, res, next) => {
+    user.loginCheck(req.session, (err, result) => {
+        if(err){
+            return res.json({"result": false});
+        }
+        return res.json({"result": true});
+   })
+});
+
+router.post('/log_in', (req, res, next) => {
+    var body = req.body;
+    
+    user.doLogin(body.id, body.password, (err, result) => {        
+        if(err){
+            return next(err);
+        }        
+        req.session.id = body.id;
+        req.session.login = true;
+        return res.json({"result": true});
+    })
+});
+
+router.get('/log_out', (req, res, next) => {    
+    try{
+        if(req.session.login == false){
+            return res.json({"result": false});
+        }
+        req.session.destroy;
+        req.session.login = false;
+        return res.json({"result": true});  
+    }
+    catch(err){
+        return next(err);
+    }
 });
 
 module.exports = router;
