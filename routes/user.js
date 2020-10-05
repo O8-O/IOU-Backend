@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 const user = require('../util/user');
-const cookieParser = require('cookie-parser');
 
 router.post('/sign_in', (req, res, next) => {
     var body = req.body;

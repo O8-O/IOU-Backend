@@ -23,8 +23,10 @@ app.use(session({
       maxAge: 24000 * 60 * 60 // 24 hour
     }
 }));
+app.use('/upload', express.static('uploads'));
 
 app.use('/user', require('./routes/user'));
+app.use('/popularity_board', require('./routes/popularity_board'));
 
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`)
