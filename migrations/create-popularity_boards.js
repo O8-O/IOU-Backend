@@ -17,8 +17,7 @@ module.exports = {
                 allowNull: false
             },
             contentImage: {
-                type: Sequelize.INTEGER,
-                allowNull: false
+                type: Sequelize.STRING
             },
             writer: {
                 type: Sequelize.STRING(20),
@@ -32,13 +31,13 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false
             },
-            createdAt: {
-                allowNull: false,
-                type: Sequelize.DATE
+            createdAt: {                
+                type: Sequelize.DATE,
+                allowNull: false
             },
             updatedAt: {
-                allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
+                allowNull: false
             }
         });
     },

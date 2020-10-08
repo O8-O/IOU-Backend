@@ -1,5 +1,20 @@
 const db = require('../models');
 
+function showAll(callback){
+    db.popularity_boards.findAll({
+        where:{}
+    })
+    .then(result => {
+        if(!result){
+            return callback(err);
+        }
+        return callback(null, result);
+    })
+    .catch(err => {
+        return callback(err);
+    })
+}
+
 function showAllUserBoard(id, callback){
     db.popularity_boards.findAll({
         where:{
@@ -10,35 +25,18 @@ function showAllUserBoard(id, callback){
         if(!result){
             return callback(err);
         }
-        return callback(null, result.dataValues);
+        return callback(null, result);
     })
     .catch(err => {
         return callback(err);
     })
 }
 
-function showOneUserBoard(id, post, callback){
+function showOneUserBoard(req, callback){
     db.popularity_boards.findOne({
         where:{
-            writer: id,
-            postNum: post
-        }
-    })
-    .then(result => {
-        if(!result){
-            return callback(err);
-        }
-        return callback(null, result.dataValues);
-    })
-    .catch(err => {
-        return callback(err);
-    })
-}
-
-function showComment(post, callback){
-    db.comments.findAll({
-        where:{
-            postNum: post
+            writer: req.body.id,
+            postNum: req.body.post
         }
     })
     .then(result => {
@@ -53,7 +51,7 @@ function showComment(post, callback){
 }
 
 module.exports = {
+    showAll: showAll,
     showAllUserBoard: showAllUserBoard,
-    showOneUserBoard: showOneUserBoard,
-    showComment: showComment
+    showOneUserBoard: showOneUserBoard
 }

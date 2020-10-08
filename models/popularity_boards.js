@@ -16,8 +16,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         contentImage: {
-            type: DataTypes.INTEGER,
-            allowNull: false
+            type: DataTypes.STRING
         },
         writer: {
             type: DataTypes.STRING(20),

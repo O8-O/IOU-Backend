@@ -2,11 +2,31 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 const reBoard = require('../util/popularity_board');
+const image = require('../util/image');
+const comment = require('../util/comment');
 const multer = require('multer');
 
-var upload = multer({
-    dest: 'upload/'
+const storage = multer.diskStorage({
+    destination: function(req, file, callback){
+        callback(null, './upload/');
+    },
+    filename: function(req, file, callback){
+        callback(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+    }
 });
+
+var upload = multer({
+    storage: storage
+});
+
+router.get('/show', (req, res, next) => {
+    reBoard.showAll((err, postData) => {
+        if(err){
+            return next(err);
+        }
+        return res.json({"result": postData});
+    })
+})
 
 router.get('/showAll', (req, res, next) => {
     reBoard.showAllUserBoard(req.body.id, (err, postData) => {
@@ -18,8 +38,11 @@ router.get('/showAll', (req, res, next) => {
 });
 
 router.get('/showOne', (req, res, next) => {
-    reBoard.showOneUserBoard(req.body.id, (err, postData) => {
-        reBoard.showComment(postData.postNum, (err, commentData) => {
+    reBoard.showOneUserBoard(req, (err, postData) => {
+        if(err){
+            return next(err);
+        }
+        comment.showComment(postData.postNum, (err, commentData) => {
             if(err){
                 return next(err);
             }
@@ -28,8 +51,44 @@ router.get('/showOne', (req, res, next) => {
     })
 });
 
-router.post('/create', upload.single('imagFile'), (req, res, next) => {
-    var file = req.file;
-
-    
+router.post('/create', upload.single('imgFile'), (req, res, next) => {
+    if(!req.file){
+        models.popularity_boards.create({
+            title: req.body.title,
+            contentText: req.body.contentText,
+            writer: req.body.id,
+            views: 0,
+            recommend: 0
+        })
+        .then(result => {
+            return res.json({"result": true});
+        })
+        .catch(err => {
+            return next(err);
+        })
+    }
+    else{
+        console.log("what");;
+        image.saveImage(req, (err, result) => {
+            if(err){
+                return next(err);
+            }
+            models.popularity_boards.create({
+                title: req.body.title,
+                contentText: req.body.contentText,
+                contentImage: req.file.path,
+                writer: req.body.id,
+                views: 0,
+                recommend: 0
+            })
+            .then(result => {
+                return res.json({"result": true});
+            })
+            .catch(err => {
+                return next(err);
+            })
+        })        
+    }
 })
+
+module.exports = router;
