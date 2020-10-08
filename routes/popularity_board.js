@@ -68,7 +68,6 @@ router.post('/create', upload.single('imgFile'), (req, res, next) => {
         })
     }
     else{
-        console.log("what");;
         image.saveImage(req, (err, result) => {
             if(err){
                 return next(err);
@@ -89,6 +88,15 @@ router.post('/create', upload.single('imgFile'), (req, res, next) => {
             })
         })        
     }
-})
+});
+
+router.post('/comment', (req, res, next) => {
+    comment.makeComment(req, (err, result) => {
+        if(err){
+            return next(err);
+        }
+        return res.json({"result": true});
+    })
+});
 
 module.exports = router;
