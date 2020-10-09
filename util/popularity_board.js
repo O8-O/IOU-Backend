@@ -32,10 +32,9 @@ function showAllUserBoard(id, callback){
     })
 }
 
-function showOneUserBoard(req, callback){
+function showOneBoard(req, callback){
     db.popularity_boards.findOne({
         where:{
-            writer: req.body.id,
             postNum: req.body.post
         }
     })
@@ -53,5 +52,5 @@ function showOneUserBoard(req, callback){
 module.exports = {
     showAll: showAll,
     showAllUserBoard: showAllUserBoard,
-    showOneUserBoard: showOneUserBoard
+    showOneBoard: showOneBoard
 }

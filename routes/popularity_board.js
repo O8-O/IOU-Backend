@@ -38,7 +38,7 @@ router.get('/showAll', (req, res, next) => {
 });
 
 router.get('/showOne', (req, res, next) => {
-    reBoard.showOneUserBoard(req, (err, postData) => {
+    reBoard.showOneBoard(req, (err, postData) => {
         if(err){
             return next(err);
         }
