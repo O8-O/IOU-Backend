@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('popularity_boards', {
+        return queryInterface.createTable('free_boards', {
             postNum: {
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
@@ -42,6 +42,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('popularity_boards');
+        return queryInterface.dropTable('free_boards');
     }
 };

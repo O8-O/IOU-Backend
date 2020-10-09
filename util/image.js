@@ -1,4 +1,5 @@
 const db = require('../models');
+const fs = require('fs');
 
 function saveImage(req, callback){
     db.images.create({
@@ -13,6 +14,27 @@ function saveImage(req, callback){
     })
 }
 
+function deleteImage(req, callback){
+    var link = req.body.image;
+    fs.unlink(link, (err) => {
+        if(err){
+            return callback(err);
+        }
+        db.images.destroy({
+            where: {
+                image: link
+            }
+        })
+        .then(result => {        
+            return callback(null, result.dataValues);
+        })
+        .catch(err => {
+            return callback(err);
+        })
+    })
+}
+
 module.exports = {
-    saveImage: saveImage
+    saveImage: saveImage,
+    deleteImage: deleteImage
 }

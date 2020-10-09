@@ -1,10 +1,10 @@
 const db = require('../models');
 
 function showAll(callback){
-    db.popularity_boards.findAll({
+    db.free_boards.findAll({
         where:{}
     })
-    .then(result => {
+    .then(result => {0
         if(!result){
             return callback(err);
         }
@@ -16,7 +16,7 @@ function showAll(callback){
 }
 
 function showAllUserBoard(id, callback){
-    db.popularity_boards.findAll({
+    db.free_boards.findAll({
         where:{
             writer: id
         }
@@ -33,9 +33,26 @@ function showAllUserBoard(id, callback){
 }
 
 function showOneBoard(req, callback){
-    db.popularity_boards.findOne({
+    db.free_boards.findOne({
         where:{
-            postNum: req.body.post
+            postNum: req.body.postNum
+        }
+    })
+    .then(result => {
+        if(!result){
+            return callback(err);
+        }
+        return callback(null, result.dataValues);
+    })
+    .catch(err => {
+        return callback(err);
+    })
+}
+
+function deleteBoard(req, callback){
+    db.free_boards.destroy({
+        where: {
+            postNum: req.body.postNum
         }
     })
     .then(result => {
@@ -52,5 +69,6 @@ function showOneBoard(req, callback){
 module.exports = {
     showAll: showAll,
     showAllUserBoard: showAllUserBoard,
-    showOneBoard: showOneBoard
+    showOneBoard: showOneBoard,
+    deleteBoard: deleteBoard
 }

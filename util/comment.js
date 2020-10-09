@@ -28,7 +28,37 @@ function makeComment(req, callback){
     })
 }
 
+function deleteComment(req, callback){
+    db.comments.destroy({
+        where: {
+            commentNum: req.body.commentNum 
+        }
+    })
+    .then(result => {        
+        return callback(null, result.dataValues);
+    })
+    .catch(err => {
+        return callback(err);
+    })
+}
+
+function deletePostComment(req, callback){
+    db.comments.destroy({
+        where: {
+            postNum: req.body.postNum
+        }
+    })
+    .then(result => {        
+        return callback(null, result.dataValues);
+    })
+    .catch(err => {
+        return callback(err);
+    })
+}
+
 module.exports = {
     showComment: showComment,
-    makeComment: makeComment
+    makeComment: makeComment,
+    deleteComment: deleteComment,
+    deletePostComment: deletePostComment
 }

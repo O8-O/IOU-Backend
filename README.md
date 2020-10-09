@@ -82,10 +82,10 @@ npm install
 >       - POSSIBLE ERROR : 
 >   ```
 >
-> ## popularity_board
->> ### GET "/popularity_board/show"
+> ## free_board
+>> ### GET "/free_board/show"
 >   ```
->   - USAGE : Get all popularity board data.
+>   - USAGE : Get all free board data.
 >   - REQUEST : Nothing.
 >   - RESPONSE
 >       - SUCCESS
@@ -95,9 +95,9 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
->> ### GET "/popularity_board/showAll"
+>> ### GET "/free_board/showAll"
 >   ```
->   - USAGE : Get all user's popularity board data.
+>   - USAGE : Get all user's free board data.
 >   - REQUEST
 >       - BODY(JSON)
 >       {
@@ -111,13 +111,13 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
->> ### GET "/popularity_board/showOne"
+>> ### GET "/free_board/showOne"
 >   ```
->   - USAGE : Get one specific popularity board data.
+>   - USAGE : Get one specific free board data.
 >   - REQUEST
 >       - BODY(JSON)
 >       {
->           post : {postNum}
+>           postNum : {postNum}
 >       }
 >   - RESPONSE
 >       - SUCCESS
@@ -128,9 +128,9 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
->> ### POST "/popularity_board/create"
+>> ### POST "/free_board/create"
 >   ```
->   - USAGE : Make popularity board data in DB.
+>   - USAGE : Make free board data in DB.
 >   - REQUEST
 >       - BODY(JSON)
 >       {
@@ -147,7 +147,7 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
->> ### POST "/popularity_board/comment"
+>> ### POST "/free_board/comment"
 >   ```
 >   - USAGE : Make comment data in DB.
 >   - REQUEST

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
-const reBoard = require('../util/popularity_board');
+const freeBoard = require('../util/free_board');
 const image = require('../util/image');
 const comment = require('../util/comment');
 const multer = require('multer');
@@ -20,7 +20,7 @@ var upload = multer({
 });
 
 router.get('/show', (req, res, next) => {
-    reBoard.showAll((err, postData) => {
+    freeBoard.showAll((err, postData) => {
         if(err){
             return next(err);
         }
@@ -29,7 +29,7 @@ router.get('/show', (req, res, next) => {
 })
 
 router.get('/showAll', (req, res, next) => {
-    reBoard.showAllUserBoard(req.body.id, (err, postData) => {
+    freeBoard.showAllUserBoard(req.body.id, (err, postData) => {
         if(err){
             return next(err);
         }
@@ -38,7 +38,7 @@ router.get('/showAll', (req, res, next) => {
 });
 
 router.get('/showOne', (req, res, next) => {
-    reBoard.showOneBoard(req, (err, postData) => {
+    freeBoard.showOneBoard(req, (err, postData) => {
         if(err){
             return next(err);
         }
@@ -53,7 +53,7 @@ router.get('/showOne', (req, res, next) => {
 
 router.post('/create', upload.single('imgFile'), (req, res, next) => {
     if(!req.file){
-        models.popularity_boards.create({
+        models.free_boards.create({
             title: req.body.title,
             contentText: req.body.contentText,
             writer: req.body.id,
@@ -72,7 +72,7 @@ router.post('/create', upload.single('imgFile'), (req, res, next) => {
             if(err){
                 return next(err);
             }
-            models.popularity_boards.create({
+            models.free_boards.create({
                 title: req.body.title,
                 contentText: req.body.contentText,
                 contentImage: req.file.path,
@@ -88,6 +88,35 @@ router.post('/create', upload.single('imgFile'), (req, res, next) => {
             })
         })        
     }
+});
+
+router.post('/delete', (req, res, next) => {
+    comment.deletePostComment(req, (err, result) => {
+        if(err){
+            return next(err);
+        }
+        if(!req.body.image){
+            freeBoard.deleteBoard(req, (err, result) => {
+                if(err){
+                    return next(err);
+                }
+                return res.json({"result": true});
+            })
+        }
+        else{
+            image.deleteImage(req, (err, result) => {
+                if(err){
+                    return next(err);
+                }
+                freeBoard.deleteBoard(req, (err, result) => {
+                    if(err){
+                        return next(err);
+                    }
+                    return res.json({"result": true});
+                })
+            })
+        }        
+    })
 });
 
 router.post('/comment', (req, res, next) => {

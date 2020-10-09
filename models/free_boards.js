@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-    const popularity_boards = sequelize.define('popularity_boards', {
+    const free_boards = sequelize.define('free_boards', {
         postNum: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -31,5 +31,5 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         }
     });
-    return popularity_boards;
+    return free_boards;
 };

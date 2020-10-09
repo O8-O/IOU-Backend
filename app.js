@@ -26,7 +26,7 @@ app.use(session({
 app.use('/upload', express.static('uploads'));
 
 app.use('/user', require('./routes/user'));
-app.use('/popularity_board', require('./routes/popularity_board'));
+app.use('/free_board', require('./routes/free_board'));
 
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`)
