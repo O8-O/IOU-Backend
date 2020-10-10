@@ -31,6 +31,7 @@ function makeComment(req, callback){
 function deleteComment(req, callback){
     db.comments.destroy({
         where: {
+            writer: req.body.id,
             commentNum: req.body.commentNum 
         }
     })
@@ -42,18 +43,39 @@ function deleteComment(req, callback){
     })
 }
 
-function deletePostComment(req, callback){
-    db.comments.destroy({
-        where: {
-            postNum: req.body.postNum
-        }
-    })
-    .then(result => {        
-        return callback(null, result.dataValues);
-    })
-    .catch(err => {
-        return callback(err);
-    })
+// function deletePostComment(req, callback){
+//     db.comments.destroy({
+//         where: {
+//             postNum: req.body.postNum
+//         }
+//     })
+//     .then(result => {        
+//         return callback(null, result.dataValues);
+//     })
+//     .catch(err => {
+//         return callback(err);
+//     })
+// }
+
+function deletePostComment(req){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.comments.destroy({
+                where: {
+                    postNum: req.body.postNum
+                }
+            })
+            .then(result => {
+                if(!result){
+                    reject(new Error());
+                }
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(err);
+            })
+        }, 100);
+    });
 }
 
 module.exports = {

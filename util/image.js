@@ -14,24 +14,48 @@ function saveImage(req, callback){
     })
 }
 
-function deleteImage(req, callback){
-    var link = req.body.image;
-    fs.unlink(link, (err) => {
-        if(err){
-            return callback(err);
-        }
-        db.images.destroy({
-            where: {
-                image: link
-            }
-        })
-        .then(result => {        
-            return callback(null, result.dataValues);
-        })
-        .catch(err => {
-            return callback(err);
-        })
-    })
+// function deleteImage(link, callback){
+//     fs.unlink(link, (err) => {
+//         if(err){
+//             return callback(err);
+//         }
+//         link.replace(/\\/g, '\\');
+//         db.images.destroy({
+//             where: {
+//                 image: link
+//             }
+//         })
+//         .then(result => {        
+//             return callback(null, result.dataValues);
+//         })
+//         .catch(err => {
+//             return callback(err);
+//         })
+//     })
+// }
+
+function deleteImage(link){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            fs.unlink(link, (err) => {
+                if(err){
+                    reject(err);
+                }
+                link.replace(/\\/g, '\\');
+                db.images.destroy({
+                    where: {
+                        image: link
+                    }
+                })
+                .then(result => {        
+                    resolve(null, result.dataValues);
+                })
+                .catch(err => {
+                    reject(err);
+                })
+            })
+        }, 100);
+    });
 }
 
 module.exports = {

@@ -49,26 +49,69 @@ function showOneBoard(req, callback){
     })
 }
 
-function deleteBoard(req, callback){
-    db.free_boards.destroy({
-        where: {
-            postNum: req.body.postNum
-        }
-    })
-    .then(result => {
-        if(!result){
-            return callback(err);
-        }
-        return callback(null, result.dataValues);
-    })
-    .catch(err => {
-        return callback(err);
-    })
+function showOnePromise(req){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.free_boards.findOne({
+                where:{
+                    postNum: req.body.postNum
+                }
+            })
+            .then(result => {
+                if(!result){
+                    reject(new Error());
+                }
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(err);
+            })
+        }, 100);
+    });
+}
+
+// function deleteBoard(req, callback){
+//     db.free_boards.destroy({
+//         where: {
+//             postNum: req.body.postNum
+//         }
+//     })
+//     .then(result => {
+//         if(!result){
+//             return callback(err);
+//         }
+//         return callback(null, result.dataValues);
+//     })
+//     .catch(err => {
+//         return callback(err); 
+//     })
+// }
+
+function deleteBoard(req){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.free_boards.destroy({
+                where: {
+                    postNum: req.body.postNum
+                }
+            })
+            .then(result => {
+                if(!result){
+                    reject(new Error());
+                }
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(err);
+            })
+        }, 100);
+    });
 }
 
 module.exports = {
     showAll: showAll,
     showAllUserBoard: showAllUserBoard,
     showOneBoard: showOneBoard,
-    deleteBoard: deleteBoard
+    showOnePromise: showOnePromise,
+    deleteBoard: deleteBoard    
 }

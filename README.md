@@ -95,9 +95,9 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
->> ### GET "/free_board/showAll"
+>> ### GET "/free_board/showAllUser"
 >   ```
->   - USAGE : Get all user's free board data.
+>   - USAGE : Get current user's entire free board data.
 >   - REQUEST
 >       - BODY(JSON)
 >       {
@@ -147,6 +147,23 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
+>> ### POST "/free_board/delete"
+>   ```
+>   - USAGE : Delete free board data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           postNum : {postNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 
+>   ```
 >> ### POST "/free_board/comment"
 >   ```
 >   - USAGE : Make comment data in DB.
@@ -156,6 +173,23 @@ npm install
 >           postNum : {postNum},
 >           content : {content},
 >           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 
+>   ```
+>> ### POST "/free_board/deleteComment"
+>   ```
+>   - USAGE : Delete user's specific comment data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           commentNum: {commentNum}
 >       }
 >   - RESPONSE
 >       - SUCCESS

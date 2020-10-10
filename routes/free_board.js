@@ -28,7 +28,7 @@ router.get('/show', (req, res, next) => {
     })
 })
 
-router.get('/showAll', (req, res, next) => {
+router.get('/showAllUser', (req, res, next) => {
     freeBoard.showAllUserBoard(req.body.id, (err, postData) => {
         if(err){
             return next(err);
@@ -90,33 +90,57 @@ router.post('/create', upload.single('imgFile'), (req, res, next) => {
     }
 });
 
-router.post('/delete', (req, res, next) => {
-    comment.deletePostComment(req, (err, result) => {
-        if(err){
+// router.post('/delete', (req, res, next) => {    
+//     comment.deletePostComment(req, (err, result) => {
+//         if(err){
+//             return next(err);
+//         }
+//         freeBoard.showOneBoard(req, (err, result) => {
+//             console.log(result);
+//             if(!result.contentImage){
+//                 freeBoard.deleteBoard(req, (err, result) => {
+//                     if(err){
+//                         return next(err);
+//                     }
+//                     return res.json({"result": true});
+//                 })
+//             }
+//             else{
+//                 image.deleteImage(result.contentImage, (err, result) => {
+//                     if(err){
+//                         return next(err);
+//                     }
+//                     freeBoard.deleteBoard(req, (err, result) => {
+//                         if(err){
+//                             return next(err);
+//                         }
+//                         return res.json({"result": true});
+//                     })
+//                 })
+//             }     
+//         })           
+//     })
+// });
+
+router.post('/delete', async (req, res, next) => {    
+        try{                 
+            var post = await freeBoard.showOnePromise(req);
+
+            if(post.writer != req.body.id){
+                throw new Error();
+            }
+            var commentResult = await comment.deletePostComment(req);       
+            if (!post.contentImage){
+                var result = await freeBoard.deleteBoard(req);
+            }
+            else{
+                var imageResult = await image.deleteImage(post.contentImage);
+                var result = await freeBoard.deleteBoard(req);
+            }
+            return res.json({"result" : true});
+        } catch(err) {
             return next(err);
-        }
-        if(!req.body.image){
-            freeBoard.deleteBoard(req, (err, result) => {
-                if(err){
-                    return next(err);
-                }
-                return res.json({"result": true});
-            })
-        }
-        else{
-            image.deleteImage(req, (err, result) => {
-                if(err){
-                    return next(err);
-                }
-                freeBoard.deleteBoard(req, (err, result) => {
-                    if(err){
-                        return next(err);
-                    }
-                    return res.json({"result": true});
-                })
-            })
-        }        
-    })
+        }     
 });
 
 router.post('/comment', (req, res, next) => {
@@ -127,5 +151,14 @@ router.post('/comment', (req, res, next) => {
         return res.json({"result": true});
     })
 });
+
+router.post('/deleteComment', (req, res, next) => {    
+    comment.deleteComment(req, (err, result) => {
+        if(err){
+            return next(err);
+        }
+        return res.json({"result": true});
+    })
+})
 
 module.exports = router;
