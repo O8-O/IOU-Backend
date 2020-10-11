@@ -160,7 +160,7 @@ function deleteVote(req){
         setTimeout(() => {
             db.votes.destroy({
                 where: {
-                    voteNum: req.body.voteNum,
+                    postNum: req.body.postNum,
                     user: req.body.id
                 }
             })
@@ -198,6 +198,45 @@ function deleteAllVote(req){
     });
 }
 
+function countVote(req){
+    var count = {};
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.votes.findAndCountAll({
+                where: {
+                    postNum: req.body.postNum,
+                    choice: 1
+                }                
+            })
+            .then(result => {
+                count.count1 = result.count;
+                if(!result){
+                    reject(new Error());
+                }
+                db.votes.findAndCountAll({
+                    where: {
+                        postNum: req.body.postNum,
+                        choice: 2
+                    }                
+                })
+                .then(result => {
+                    count.count2 = result.count;
+                    if(!result){
+                        reject(new Error());
+                    }
+                    resolve(count);
+                })
+                .catch(err => {
+                    reject(err);
+                })
+            })
+            .catch(err => {
+                reject(err);
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     showAll: showAll,
     showAllUserBoard: showAllUserBoard,
@@ -208,5 +247,6 @@ module.exports = {
     showVote: showVote,
     showUserVote: showUserVote,
     deleteVote: deleteVote,
-    deleteAllVote: deleteAllVote
+    deleteAllVote: deleteAllVote,
+    countVote: countVote
 }

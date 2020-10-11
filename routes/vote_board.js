@@ -5,6 +5,7 @@ const voteBoard = require('../util/vote_board');
 const image = require('../util/image');
 const comment = require('../util/comment');
 const multer = require('multer');
+const vote_board = require('../util/vote_board');
 
 const storage = multer.diskStorage({
     destination: function(req, file, callback){
@@ -37,7 +38,8 @@ router.get('/showAllUser', (req, res, next) => {
     })
 });
 
-router.get('/showOne', (req, res, next) => {
+router.get('/showOne', async (req, res, next) => {
+    var count = await vote_board.countVote(req);
     voteBoard.showOneBoard(req, (err, postData) => {
         if(err){
             return next(err);
@@ -45,8 +47,8 @@ router.get('/showOne', (req, res, next) => {
         comment.showComment(postData.postNum, (err, commentData) => {
             if(err){
                 return next(err);
-            }
-            return res.json({"board": postData, "comment": commentData});
+            }            
+            return res.json({"board": postData, "count": count, "comment": commentData});
         })
     })
 });
@@ -86,6 +88,7 @@ router.post('/delete', async (req, res, next) => {
         if(post.writer != req.body.id){
             throw new Error();
         }
+        var deleteAllVote = await voteBoard.deleteAllVote(req);
         var commentResult = await comment.deletePostComment(req);   
         var imageResult1 = await image.deleteImage(post.contentImage1);   
         var imageResult2 = await image.deleteImage(post.contentImage2);
@@ -100,7 +103,7 @@ router.post('/delete', async (req, res, next) => {
 router.post('/vote', async (req, res, next) => {
     try{
         var showResult = await voteBoard.showUserVote(req);
-        
+
         if(showResult){
             throw new Error();
         }        
@@ -123,8 +126,8 @@ router.get('/showVote', async (req, res, next) => {
 router.post('/cancelVote', async (req, res, next) => {
     try{
         var showResult = await voteBoard.showUserVote(req);      
-
-        if(showResult.voteNum != req.body.voteNum){
+        
+        if(showResult.postNum != req.body.postNum){
             throw new Error();
         }
         var deleteResult = await voteBoard.deleteVote(req);

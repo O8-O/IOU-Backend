@@ -288,7 +288,7 @@ npm install
 >       - BODY(JSON)
 >       {
 >           id : {userID},
->           voteNum : {voteNum}
+>           postNum : {postNum}
 >       }
 >   - RESPONSE
 >       - SUCCESS
