@@ -79,4 +79,59 @@ router.post('/create', upload.array('imgFile'), (req, res, next) => {
     }
 });
 
+router.post('/delete', async (req, res, next) => {
+    try{                 
+        var post = await voteBoard.showOnePromise(req);
+
+        if(post.writer != req.body.id){
+            throw new Error();
+        }
+        var commentResult = await comment.deletePostComment(req);   
+        var imageResult1 = await image.deleteImage(post.contentImage1);   
+        var imageResult2 = await image.deleteImage(post.contentImage2);
+        var result = await voteBoard.deleteBoard(req);   
+
+        return res.json({"result" : true});
+    } catch(err) {   
+        return next(err);
+    } 
+});
+
+router.post('/vote', async (req, res, next) => {
+    try{
+        var showResult = await voteBoard.showUserVote(req);
+        
+        if(showResult){
+            throw new Error();
+        }        
+        var voteResult = await voteBoard.makeVote(req);
+        return res.json({"result" : true});
+    } catch(err) {   
+        return next(err);
+    } 
+});
+
+router.get('/showVote', async (req, res, next) => {
+    try{
+        var result = await voteBoard.showVote(req);
+        return res.json({"result" : result});
+    } catch(err) {   
+        return next(err);
+    } 
+})
+
+router.post('/cancelVote', async (req, res, next) => {
+    try{
+        var showResult = await voteBoard.showUserVote(req);      
+
+        if(showResult.voteNum != req.body.voteNum){
+            throw new Error();
+        }
+        var deleteResult = await voteBoard.deleteVote(req);
+        return res.json({"result" : true});
+    } catch(err) {   
+        return next(err);
+    } 
+})
+
 module.exports = router;

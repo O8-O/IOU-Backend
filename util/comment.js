@@ -1,9 +1,9 @@
 const db = require('../models');
 
-function showComment(post, callback){
+function showComment(postNum, callback){
     db.comments.findAll({
         where:{
-            postNum: post
+            postNum: postNum
         }
     })
     .then(result => {        
@@ -12,6 +12,27 @@ function showComment(post, callback){
     .catch(err => {
         return callback(err);
     })
+}
+
+function showPromise(commentNum){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.comments.findOne({
+                where: {
+                    commentNum: commentNum 
+                }
+            })
+            .then(result => {
+                if(!result){
+                    reject(new Error());
+                }
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(err);
+            })
+        }, 100);
+    });
 }
 
 function makeComment(req, callback){
@@ -66,9 +87,6 @@ function deletePostComment(req){
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
@@ -80,6 +98,7 @@ function deletePostComment(req){
 
 module.exports = {
     showComment: showComment,
+    showPromise: showPromise,
     makeComment: makeComment,
     deleteComment: deleteComment,
     deletePostComment: deletePostComment

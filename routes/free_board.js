@@ -143,22 +143,4 @@ router.post('/delete', async (req, res, next) => {
         }     
 });
 
-router.post('/comment', (req, res, next) => {
-    comment.makeComment(req, (err, result) => {
-        if(err){
-            return next(err);
-        }
-        return res.json({"result": true});
-    })
-});
-
-router.post('/deleteComment', (req, res, next) => {    
-    comment.deleteComment(req, (err, result) => {
-        if(err){
-            return next(err);
-        }
-        return res.json({"result": true});
-    })
-})
-
 module.exports = router;
