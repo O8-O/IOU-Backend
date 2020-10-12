@@ -1,9 +1,10 @@
 const db = require('../models');
 
-function showComment(post, callback){
+function showComment(postNum, postType, callback){
     db.comments.findAll({
         where:{
-            postNum: post
+            postType: postType,
+            postNum: postNum
         }
     })
     .then(result => {        
@@ -14,8 +15,30 @@ function showComment(post, callback){
     })
 }
 
+function showPromise(commentNum){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.comments.findOne({
+                where: {
+                    commentNum: commentNum 
+                }
+            })
+            .then(result => {
+                if(!result){
+                    reject(new Error());
+                }
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(err);
+            })
+        }, 100);
+    });
+}
+
 function makeComment(req, callback){
     db.comments.create({
+        postType: req.body.postType,
         postNum: req.body.postNum,
         content: req.body.content,
         writer: req.body.id
@@ -57,18 +80,16 @@ function deleteComment(req, callback){
 //     })
 // }
 
-function deletePostComment(req){
+function deletePostComment(req, postType){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             db.comments.destroy({
                 where: {
+                    postType: postType,
                     postNum: req.body.postNum
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
@@ -80,6 +101,7 @@ function deletePostComment(req){
 
 module.exports = {
     showComment: showComment,
+    showPromise: showPromise,
     makeComment: makeComment,
     deleteComment: deleteComment,
     deletePostComment: deletePostComment

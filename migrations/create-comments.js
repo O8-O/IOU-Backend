@@ -8,6 +8,10 @@ module.exports = {
                 allowNull: false,
                 primaryKey: true
             },
+            postType: {
+                type: Sequelize.INTEGER,
+                allowNull: false
+            },
             postNum: {
                 type: Sequelize.INTEGER,
                 allowNull: false
