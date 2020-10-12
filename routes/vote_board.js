@@ -44,7 +44,7 @@ router.get('/showOne', async (req, res, next) => {
         if(err){
             return next(err);
         }
-        comment.showComment(postData.postNum, (err, commentData) => {
+        comment.showComment(postData.postNum, 2, (err, commentData) => {
             if(err){
                 return next(err);
             }            
@@ -84,12 +84,12 @@ router.post('/create', upload.array('imgFile'), (req, res, next) => {
 router.post('/delete', async (req, res, next) => {
     try{                 
         var post = await voteBoard.showOnePromise(req);
-
+   
         if(post.writer != req.body.id){
             throw new Error();
-        }
+        } 
         var deleteAllVote = await voteBoard.deleteAllVote(req);
-        var commentResult = await comment.deletePostComment(req);   
+        var commentResult = await comment.deletePostComment(req, 2);   
         var imageResult1 = await image.deleteImage(post.contentImage1);   
         var imageResult2 = await image.deleteImage(post.contentImage2);
         var result = await voteBoard.deleteBoard(req);   

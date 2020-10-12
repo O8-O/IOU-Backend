@@ -3,7 +3,7 @@ const router = express.Router();
 const comment = require('../util/comment');
 
 router.get('/show', (req, res, next) =>{
-    comment.showComment(req.body.postNum, (err, result) => {
+    comment.showComment(req.body.postNum, req.body.postType, (err, result) => {
         if(err){
             return next(err);
         }

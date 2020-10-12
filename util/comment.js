@@ -1,8 +1,9 @@
 const db = require('../models');
 
-function showComment(postNum, callback){
+function showComment(postNum, postType, callback){
     db.comments.findAll({
         where:{
+            postType: postType,
             postNum: postNum
         }
     })
@@ -37,6 +38,7 @@ function showPromise(commentNum){
 
 function makeComment(req, callback){
     db.comments.create({
+        postType: req.body.postType,
         postNum: req.body.postNum,
         content: req.body.content,
         writer: req.body.id
@@ -78,11 +80,12 @@ function deleteComment(req, callback){
 //     })
 // }
 
-function deletePostComment(req){
+function deletePostComment(req, postType){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             db.comments.destroy({
                 where: {
+                    postType: postType,
                     postNum: req.body.postNum
                 }
             })

@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             primaryKey: true
         },
+        postType: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         postNum: {
             type: DataTypes.INTEGER,
             allowNull: false

@@ -42,7 +42,7 @@ router.get('/showOne', (req, res, next) => {
         if(err){
             return next(err);
         }
-        comment.showComment(postData.postNum, (err, commentData) => {
+        comment.showComment(postData.postNum, 1, (err, commentData) => {
             if(err){
                 return next(err);
             }
@@ -129,7 +129,7 @@ router.post('/delete', async (req, res, next) => {
             if(post.writer != req.body.id){
                 throw new Error();
             }
-            var commentResult = await comment.deletePostComment(req);       
+            var commentResult = await comment.deletePostComment(req, 1);       
             if (!post.contentImage){
                 var result = await freeBoard.deleteBoard(req);
             }

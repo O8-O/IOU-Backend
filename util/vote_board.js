@@ -186,9 +186,6 @@ function deleteAllVote(req){
                 }                
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {

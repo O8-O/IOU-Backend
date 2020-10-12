@@ -305,13 +305,14 @@ npm install
 >   - REQUEST
 >       - BODY(JSON)
 >       {
+>           postType : {postType} (1: free_board, 2: vote_board),
 >           postNum : {postNum}
 >       }
 >   - RESPONSE
 >       - SUCCESS
 >           - BODY(JSON)
 >           {
->               result : true
+>               result : {result}
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
@@ -321,6 +322,7 @@ npm install
 >   - REQUEST
 >       - BODY(JSON)
 >       {
+>           postType : {postType} (1: free_board, 2: vote_board),
 >           postNum : {postNum},
 >           content : {content},
 >           id : {userID}
