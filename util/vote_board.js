@@ -15,6 +15,22 @@ function showAll(callback){
     })
 }
 
+function showAllPromise(){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.vote_boards.findAll({
+                where:{}
+            })
+            .then(result => {                
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(err);
+            })
+        }, 100);
+    });
+}
+
 function showAllUserBoard(id, callback){
     db.vote_boards.findAll({
         where:{
@@ -236,6 +252,7 @@ function countVote(req){
 
 module.exports = {
     showAll: showAll,
+    showAllPromise: showAllPromise,
     showAllUserBoard: showAllUserBoard,
     showOneBoard: showOneBoard,
     showOnePromise: showOnePromise,

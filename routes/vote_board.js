@@ -4,8 +4,8 @@ const models = require('../models');
 const voteBoard = require('../util/vote_board');
 const image = require('../util/image');
 const comment = require('../util/comment');
+const recommend = require('../util/recommend');
 const multer = require('multer');
-const vote_board = require('../util/vote_board');
 
 const storage = multer.diskStorage({
     destination: function(req, file, callback){
@@ -39,7 +39,7 @@ router.get('/showAllUser', (req, res, next) => {
 });
 
 router.get('/showOne', async (req, res, next) => {
-    var count = await vote_board.countVote(req);
+    var count = await voteBoard.countVote(req);
     voteBoard.showOneBoard(req, (err, postData) => {
         if(err){
             return next(err);
@@ -90,6 +90,7 @@ router.post('/delete', async (req, res, next) => {
         } 
         var deleteAllVote = await voteBoard.deleteAllVote(req);
         var commentResult = await comment.deletePostComment(req, 2);   
+        var recommendResult = await recommend.deleteVoteRecommend(req);  
         var imageResult1 = await image.deleteImage(post.contentImage1);   
         var imageResult2 = await image.deleteImage(post.contentImage2);
         var result = await voteBoard.deleteBoard(req);   

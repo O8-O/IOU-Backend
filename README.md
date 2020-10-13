@@ -298,6 +298,19 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
+> ## hot_board
+>> ### GET "/hot_board/show"
+>   ```
+>   - USAGE : Show all free_board in recommend DESC Order. (if same recommend count, date desc order)
+>   - REQUEST : Nothing.
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 
+>   ```
 > ## comment
 >> ### GET "/comment/show"
 >   ```
@@ -352,5 +365,72 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
->
->
+> ## recommend
+>> ### POST "/recommend/free"
+>   ```
+>   - USAGE : Make free board recommend data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 
+>   ```
+>> ### POST "/recommend/vote"
+>   ```
+>   - USAGE : Make vote board recommend data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 
+>   ```
+>> ### POST "/recommend/freeCancel"
+>   ```
+>   - USAGE : Delete free board recommend data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 
+>   ```
+>> ### POST "/recommend/voteCancel"
+>   ```
+>   - USAGE : Delete vote board recommend data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 
+>   ```
