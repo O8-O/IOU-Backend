@@ -28,7 +28,9 @@ app.use('/upload', express.static('uploads'));
 app.use('/user', require('./routes/user'));
 app.use('/free_board', require('./routes/free_board'));
 app.use('/vote_board', require('./routes/vote_board'));
+app.use('/hot_board', require('./routes/hot_board'));
 app.use('/comment', require('./routes/comment'));
+app.use('/recommend', require('./routes/recommend'));
 
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`)

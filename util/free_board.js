@@ -15,6 +15,22 @@ function showAll(callback){
     })
 }
 
+function showAllPromise(){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.free_boards.findAll({
+                where:{}
+            })
+            .then(result => {                
+                resolve(result);
+            })
+            .catch(err => {
+                reject(err);
+            })
+        }, 100);
+    });
+}
+
 function showAllUserBoard(id, callback){
     db.free_boards.findAll({
         where:{
@@ -110,6 +126,7 @@ function deleteBoard(req){
 
 module.exports = {
     showAll: showAll,
+    showAllPromise: showAllPromise,
     showAllUserBoard: showAllUserBoard,
     showOneBoard: showOneBoard,
     showOnePromise: showOnePromise,
