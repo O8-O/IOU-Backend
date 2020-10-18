@@ -1,6 +1,28 @@
 const crypto = require('crypto');
 const db = require('../models');
 
+function errorWrapper(errorType, err){
+    if(err){
+        err.type = 0;
+        return err;
+    }
+    err = new Error();
+
+    switch(errorType){
+        case 101:
+            err.message = "No ID Exists";
+            break;
+        case 102:
+            err.message = "Incorrect Password";
+            break;
+        case 103:
+            err.message = "Not valid session";
+            break;
+    }
+    err.type = errorType;
+    return err;
+}
+
 function encryptPW(pw, callback){
     var salt = Math.round((new Date().valueOf()*Math.random())) + "";
     var hashPassword = crypto.createHash('sha512').update(pw + salt).digest("hex");
@@ -15,33 +37,32 @@ function findUserByID(id, callback){
         }
     })
     .then(result => {
-        if(!result){
-            return callback(err);
+        if(result){
+            return callback(errorWrapper(101), result);
         }
-        return callback(null, result.dataValues);
+        return callback(null, result);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(0, err));
     })
 }
 
 function doLogin(id, pw, callback){
     findUserByID(id, (err, result) => {
-        if(err){
-            return callback(err);
-        }
-        var hashPassword = crypto.createHash('sha512').update(pw + result.salt).digest("hex");
-        if(hashPassword == result.pw){
-            return callback(null, result);
-        }
-        return callback(err);
+        if(result != null){
+            var hashPassword = crypto.createHash('sha512').update(pw + result.salt).digest("hex");
+            if(hashPassword == result.PW){
+                return callback(null, result);
+            }
+            return callback(errorWrapper(102));
+        }   
+        return callback(errorWrapper(101)); 
     })
 }
 
 function loginCheck(session, callback){
     if(!session.login){
-        err = new Error;
-        return callback(err);
+        return callback(errorWrapper(103));
     }    
     return callback(null);
 }
