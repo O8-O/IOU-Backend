@@ -27,7 +27,7 @@ router.post('/sign_in', (req, res, next) => {
     });    
 });
 
-router.get('/log_in', (req, res, next) => {
+router.get('/log_in_status', (req, res, next) => {
     user.loginCheck(req.session, (err, result) => {
         if(err){
             return next(err);

@@ -30,7 +30,7 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
->> ### GET "/user/log_in"
+>> ### GET "/user/log_in_status"
 >   ```
 >   - USAGE : Check log_in status of user.
 >   - REQUEST : Nothing.
