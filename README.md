@@ -1,10 +1,9 @@
 # IOU-Backend
->   IOU ( Interior On You ) 의 Back end Server Project.
+IOU ( Interior On You ) 의 Back end Server Project.
 
->   # 1. Setup
+# 1. Setup
 
->   Clone or download and Use npm install
-
+Clone or download and Use npm install
 >   ```
 >   npm install
 >   ```
