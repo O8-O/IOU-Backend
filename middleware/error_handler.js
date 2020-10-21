@@ -4,6 +4,6 @@ module.exports = {
         next(err);
     },
     httpSender : (err, req, res, next) => {
-        return res.status(520).json({"result": false, "msg": "Unexpected error"});
+        return res.status(520).json({"result": false, "errType": err.type, "msg": err.message});
     }
 }

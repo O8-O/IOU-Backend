@@ -4,6 +4,7 @@ const db = require('../models');
 function errorWrapper(errorType, err){
     if(err){
         err.type = 0;
+        err.message = "Unexpected error";
         return err;
     }
     err = new Error();
