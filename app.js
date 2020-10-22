@@ -4,6 +4,7 @@ var port = 3000
 const models = require('./models/index');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const errorHandler = require('./middleware/error_handler');
 
 models.sequelize.sync().then(() => {
     console.log("DB 연결 성공");
@@ -31,6 +32,7 @@ app.use('/vote_board', require('./routes/vote_board'));
 app.use('/hot_board', require('./routes/hot_board'));
 app.use('/comment', require('./routes/comment'));
 app.use('/recommend', require('./routes/recommend'));
+app.use([errorHandler.logHandler, errorHandler.httpSender]);
 
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`)
