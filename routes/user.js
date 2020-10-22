@@ -8,6 +8,9 @@ router.post('/sign_in', (req, res, next) => {
     
     user.encryptPW(body.password, (err, password, saltMade) => {
         user.findUserByID(body.id, (err, result) => {
+            if(err){
+                return next(err);
+            }
             models.users.create({
                 ID: body.id,
                 PW: password,
@@ -24,10 +27,10 @@ router.post('/sign_in', (req, res, next) => {
     });    
 });
 
-router.get('/log_in', (req, res, next) => {
+router.get('/log_in_status', (req, res, next) => {
     user.loginCheck(req.session, (err, result) => {
         if(err){
-            return res.json({"result": false});
+            return next(err);
         }
         return res.json({"result": true});
    })
@@ -36,7 +39,7 @@ router.get('/log_in', (req, res, next) => {
 router.post('/log_in', (req, res, next) => {
     var body = req.body;
     
-    user.doLogin(body.id, body.password, (err, result) => {        
+    user.doLogin(body.id, body.password, (err, result) => {     
         if(err){
             return next(err);
         }        
@@ -47,17 +50,13 @@ router.post('/log_in', (req, res, next) => {
 });
 
 router.get('/log_out', (req, res, next) => {    
-    try{
-        if(req.session.login == false){
-            return res.json({"result": false});
+    user.loginCheck(req.session, (err, result) => {
+        if(err){
+            return next(err);
         }
-        req.session.destroy;
         req.session.login = false;
-        return res.json({"result": true});  
-    }
-    catch(err){
-        return next(err);
-    }
+        return res.json({"result": true});
+   })
 });
 
 module.exports = router;

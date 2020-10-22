@@ -4,10 +4,9 @@ IOU ( Interior On You ) 의 Back end Server Project.
 # 1. Setup
 
 Clone or download and Use npm install
-
-```
-npm install
-```
+>   ```
+>   npm install
+>   ```
 
 # 2. Usage
 
@@ -28,9 +27,9 @@ npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 101
 >   ```
->> ### GET "/user/log_in"
+>> ### GET "/user/log_in_status"
 >   ```
 >   - USAGE : Check log_in status of user.
 >   - REQUEST : Nothing.
@@ -45,7 +44,7 @@ npm install
 >           {
 >               result : false
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 103
 >   ```
 >> ### POST "/user/log_in"
 >   ```
@@ -62,7 +61,7 @@ npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 101, 102
 >   ```
 >> ### GET "/user/log_out"
 >   ```
@@ -79,7 +78,7 @@ npm install
 >           {
 >               result : false
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 103
 >   ```
 >
 > ## free_board
@@ -164,6 +163,7 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
+>
 > ## vote_board
 >> ### GET "/vote_board/show"
 >   ```
@@ -298,6 +298,7 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
+>
 > ## hot_board
 >> ### GET "/hot_board/show"
 >   ```
@@ -311,6 +312,7 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
+>
 > ## comment
 >> ### GET "/comment/show"
 >   ```
@@ -365,6 +367,7 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
+>
 > ## recommend
 >> ### POST "/recommend/free"
 >   ```
@@ -434,3 +437,41 @@ npm install
 >           }
 >       - POSSIBLE ERROR : 
 >   ```
+>
+> ## ERROR CASE
+>   ```
+>   - case 0 : The Unexpected error.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 0,
+>               msg : "Unexpected error"
+>           }
+>   - case 101 : ID doesn't exist in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 101,
+>               msg : "No ID Exists"
+>           }
+>   - case 102 : Password doesn't match with ID.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 102,
+>               msg : "Incorrect Password"
+>           }
+>   - case 103 : Session is not valid.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 103,
+>               msg : "Not valid session"
+>           }
+>   ```
+>
+>
