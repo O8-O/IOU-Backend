@@ -80,6 +80,72 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 103
 >   ```
+>> ### POST "/user/upload_image"
+>   ```
+>   - USAGE : Upload and make image data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           imgFile : {imageFile}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 104
+>   ```
+>> ### GET "/user/show_all_image"
+>   ```
+>   - USAGE : Show user's uploaded image.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {list}
+>           }
+>       - POSSIBLE ERROR : 105
+>   ```
+>> ### GET "/user/show_one_image"
+>   ```
+>   - USAGE : Show user's specific uploaded image.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           imageNum : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 105
+>   ```
+>> ### POST "/user/delete_image"
+>   ```
+>   - USAGE : Delete image data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           imageNum : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 106, 107
+>   ```
 >
 > ## free_board
 >> ### GET "/free_board/show"
@@ -471,6 +537,38 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 103,
 >               msg : "Not valid session"
+>           }
+>   - case 104 : Fail to upload image.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 104,
+>               msg : "Fail to upload image"
+>           }
+>   - case 105 : Fail to show image.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 105,
+>               msg : "Fail to show image"
+>           }
+>   - case 106 : Fail to delete image.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 106,
+>               msg : "Fail to delete image"
+>           }
+>   - case 107 : Current user's id doesn't match with image's userID.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 107,
+>               msg : "ID doesn't match"
 >           }
 >   ```
 >

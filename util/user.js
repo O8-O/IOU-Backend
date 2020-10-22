@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const db = require('../models');
+const fs = require('fs');
 
 function errorWrapper(errorType, err){
     if(err){
@@ -19,6 +20,16 @@ function errorWrapper(errorType, err){
         case 103:
             err.message = "Not valid session";
             break;
+        case 104:
+            err.message = "Fail to upload image";
+            break;
+        case 105:
+            err.message = "Fail to show iamge";
+            break;
+        case 106:
+            err.message = "Fail to delete image";
+            break;
+
     }
     err.type = errorType;
     return err;
@@ -68,9 +79,91 @@ function loginCheck(session, callback){
     return callback(null);
 }
 
+function saveImage(req){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.create({
+                user: req.body.id,
+                image: req.file.path
+            })
+            .then(result => {       
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(104));
+            })
+        }, 100);
+    });
+}
+
+function showAllImage(id){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.findAll({
+                where: {
+                    user: id
+                },
+                attributes: ['imageNum', 'image']
+            })
+            .then(result => {       
+                resolve(result);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
+            })
+        }, 100);
+    });
+}
+
+function showOneImage(imageNum){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.findOne({
+                where: {
+                    imageNum: imageNum
+                }
+            })
+            .then(result => {       
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
+            })
+        }, 100);
+    });
+}
+
+function deleteImage(link){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            fs.unlink(link, (err) => {
+                if(err){
+                    reject(errorWrapper(106));
+                }
+                link.replace(/\\/g, '\\');
+                db.images.destroy({
+                    where: {
+                        image: link
+                    }
+                })
+                .then(result => {        
+                    resolve(result.dataValues);
+                })
+                .catch(err => {
+                    reject(errorWrapper(106));
+                })
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     encryptPW: encryptPW,
     findUserByID: findUserByID,
     doLogin: doLogin,
-    loginCheck: loginCheck
+    loginCheck: loginCheck,
+    saveImage: saveImage,
+    showAllImage: showAllImage,
+    showOneImage: showOneImage,
+    deleteImage: deleteImage
 }
