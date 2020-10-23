@@ -157,6 +157,43 @@ function deleteImage(link){
     });
 }
 
+function savePreference(req){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {         
+            list = JSON.stringify(req.body.list);
+            
+            db.preferences.create({
+                ID: req.body.id,
+                image: list
+            })
+            .then(result => {       
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(0, err));
+            })
+        }, 100);
+    });
+}
+
+function showPreference(id){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.preferences.findOne({
+                where: {                    
+                    ID: id
+                }
+            })
+            .then(result => { 
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(0, err));
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     encryptPW: encryptPW,
     findUserByID: findUserByID,
@@ -165,5 +202,7 @@ module.exports = {
     saveImage: saveImage,
     showAllImage: showAllImage,
     showOneImage: showOneImage,
-    deleteImage: deleteImage
+    deleteImage: deleteImage,
+    savePreference: savePreference,
+    showPreference: showPreference
 }

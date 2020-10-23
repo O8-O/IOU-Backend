@@ -117,4 +117,24 @@ router.post('/delete_image', async (req, res, next) => {
     }
 });
 
+router.post('/save_preference', async (req, res, next) => {
+    try{
+        var result = await user.savePreference(req);
+        return res.json({"result" : true});
+    } catch(err){
+        return next(err);
+    }
+});
+
+router.get('/show_preference', async(req, res, next) => {
+    try{
+        var result = await user.showPreference(req.body.id);                
+        data = JSON.parse(result.image);  
+        result.image = data;
+        return res.json({"result" : result});
+    } catch(err){
+        return next(err);
+    }
+});
+
 module.exports = router;
