@@ -161,7 +161,7 @@ function savePreference(req){
     return new Promise((resolve, reject) => {
         setTimeout(() => {         
             list = JSON.stringify(req.body.list);
-            
+
             db.preferences.create({
                 ID: req.body.id,
                 image: list
@@ -194,6 +194,29 @@ function showPreference(id){
     });
 }
 
+function addPreference(id, newData){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            list = JSON.stringify(newData);
+            db.preferences.update(
+                {
+                    image: list
+                },
+                {                
+                where: {                    
+                    ID: id
+                }  
+            })
+            .then(result => { 
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(0, err));
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     encryptPW: encryptPW,
     findUserByID: findUserByID,
@@ -204,5 +227,6 @@ module.exports = {
     showOneImage: showOneImage,
     deleteImage: deleteImage,
     savePreference: savePreference,
-    showPreference: showPreference
+    showPreference: showPreference,
+    addPreference: addPreference
 }

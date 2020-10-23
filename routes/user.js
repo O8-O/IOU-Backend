@@ -126,7 +126,7 @@ router.post('/save_preference', async (req, res, next) => {
     }
 });
 
-router.get('/show_preference', async(req, res, next) => {
+router.get('/show_preference', async (req, res, next) => {
     try{
         var result = await user.showPreference(req.body.id);                
         data = JSON.parse(result.image);  
@@ -136,5 +136,20 @@ router.get('/show_preference', async(req, res, next) => {
         return next(err);
     }
 });
+
+router.post('/add_preference', async (req, res, next) => {
+    try{
+        var result = await user.showPreference(req.body.id);                
+        data = JSON.parse(result.image);  
+        data.shift();
+        data.push(req.body.image);
+
+        var add = await user.addPreference(req.body.id, data);
+
+        return res.json({"result" : true});
+    } catch(err){
+        return next(err);
+    }
+})
 
 module.exports = router;
