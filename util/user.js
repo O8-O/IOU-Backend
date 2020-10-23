@@ -29,6 +29,12 @@ function errorWrapper(errorType, err){
         case 106:
             err.message = "Fail to delete image";
             break;
+        // case 107 is set in routes/user.js
+        case 108:
+            err.message = "Fail to save preference";
+            break;
+        case 109:
+            err.message = "Fail to add preference";
 
     }
     err.type = errorType;
@@ -170,7 +176,7 @@ function savePreference(req){
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(errorWrapper(0, err));
+                reject(errorWrapper(108));
             })
         }, 100);
     });
@@ -188,7 +194,7 @@ function showPreference(id){
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(errorWrapper(0, err));
+                reject(errorWrapper(101));
             })
         }, 100);
     });
@@ -211,7 +217,7 @@ function addPreference(id, newData){
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(errorWrapper(0, err));
+                reject(errorWrapper(109));
             })
         }, 100);
     });

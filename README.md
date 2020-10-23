@@ -146,6 +146,56 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 106, 107
 >   ```
+>> ### POST "/user/save_preference"
+>   ```
+>   - USAGE : Save preference selection data of user's in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           list : {array of imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 108
+>   ```
+>> ### POST "/user/show_preference"
+>   ```
+>   - USAGE : Show preference selection data of user's.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 101
+>   ```
+>> ### POST "/user/add_preference"
+>   ```
+>   - USAGE : Add preference selection data of user's in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           image : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 109
+>   ```
 >
 > ## free_board
 >> ### GET "/free_board/show"
@@ -569,6 +619,22 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 107,
 >               msg : "ID doesn't match"
+>           }
+>   - case 108 : Fail to save preference of current user's.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 108,
+>               msg : "Fail to save preference"
+>           }
+>   - case 109 : Fail to add preference of current user's.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 109,
+>               msg : "Fail to add preference"
 >           }
 >   ```
 >
