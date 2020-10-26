@@ -150,6 +150,32 @@ router.post('/add_preference', async (req, res, next) => {
     } catch(err){
         return next(err);
     }
-})
+});
+
+router.get('/find_id', async (req, res, next) => {
+    try{
+        var result = await user.findUserByEmail(req.body.email);   
+        return res.json({"result" : result.ID});
+    } catch(err){
+        return next(err);
+    }
+});
+
+router.post('/reset_password', async (req, res, next) => {
+    try{
+        var result = await user.findUserByEmail(req.body.email);
+        if(result.ID != req.body.id){
+            err = new Error();
+            err.type = 107;
+            err.message = "ID doesn't match"
+            throw err;
+        }
+
+        var newData = await user.setPassword(req.body.id, req.body.password);   
+        return res.json({"result" : true});
+    } catch(err){
+        return next(err);
+    }
+});
 
 module.exports = router;

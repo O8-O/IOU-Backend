@@ -35,7 +35,10 @@ function errorWrapper(errorType, err){
             break;
         case 109:
             err.message = "Fail to add preference";
-
+            break;
+        case 110:
+            err.message = "Fail to update password";
+            break;
     }
     err.type = errorType;
     return err;
@@ -223,6 +226,51 @@ function addPreference(id, newData){
     });
 }
 
+function findUserByEmail(email){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.users.findOne({
+                where: {                    
+                    email: email
+                },
+                attributes: ['ID']
+            })
+            .then(result => { 
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(101));
+            })
+        }, 100);
+    });
+}
+
+function setPassword(id, password){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            var salt = Math.round((new Date().valueOf()*Math.random())) + "";
+            var hashPassword = crypto.createHash('sha512').update(password + salt).digest("hex");
+
+            db.users.update(
+                {
+                    PW: hashPassword,
+                    salt: salt
+                },
+                {                
+                where: {                    
+                    ID: id
+                } 
+            })
+            .then(result => { 
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(110));
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     encryptPW: encryptPW,
     findUserByID: findUserByID,
@@ -234,5 +282,7 @@ module.exports = {
     deleteImage: deleteImage,
     savePreference: savePreference,
     showPreference: showPreference,
-    addPreference: addPreference
+    addPreference: addPreference,
+    findUserByEmail: findUserByEmail,
+    setPassword: setPassword
 }

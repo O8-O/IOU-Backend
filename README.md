@@ -196,6 +196,40 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 109
 >   ```
+>> ### POST "/user/find_id"
+>   ```
+>   - USAGE : Find user's ID.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           email : {userEmail}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {userID}
+>           }
+>       - POSSIBLE ERROR : 101
+>   ```
+>> ### POST "/user/reset_password"
+>   ```
+>   - USAGE : Reset user's password.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           email : {userEmail},
+>           password: {newPassword}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 107, 110
+>   ```
 >
 > ## free_board
 >> ### GET "/free_board/show"
@@ -635,6 +669,14 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 109,
 >               msg : "Fail to add preference"
+>           }
+>   - case 110 : Fail to update user's password.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 110,
+>               msg : "Fail to update password"
 >           }
 >   ```
 >
