@@ -5,8 +5,9 @@ const user = require('../util/user');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-    destination: function(req, file, callback){
-        callback(null, './upload/');
+    destination: function(req, file, callback){        
+        directory = __dirname.replace(/routes/g, 'upload\\');
+        callback(null, directory);
     },
     filename: function(req, file, callback){
         callback(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
@@ -126,12 +127,21 @@ router.post('/save_preference', async (req, res, next) => {
     }
 });
 
-router.get('/show_preference', async (req, res, next) => {
+router.get('/show_user_preference', async (req, res, next) => {
     try{
-        var result = await user.showPreference(req.body.id);                
+        var result = await user.showUserPreference(req.body.id);                
         data = JSON.parse(result.image);  
         result.image = data;
         return res.json({"result" : result});
+    } catch(err){
+        return next(err);
+    }
+});
+
+router.get('/show_preference', async (req, res, next) => {
+    try{        
+        var list = await user.showPreference(req.body.id);    
+        return res.json({"result" : list});
     } catch(err){
         return next(err);
     }

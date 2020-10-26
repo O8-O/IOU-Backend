@@ -163,7 +163,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 108
 >   ```
->> ### POST "/user/show_preference"
+>> ### POST "/user/show_user_preference"
 >   ```
 >   - USAGE : Show preference selection data of user's.
 >   - REQUEST
@@ -178,6 +178,18 @@ Clone or download and Use npm install
 >               result : {result}
 >           }
 >       - POSSIBLE ERROR : 101
+>   ```
+>> ### POST "/user/show_preference"
+>   ```
+>   - USAGE : Show recommended preference data.
+>   - REQUEST : Nothing.
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 105
 >   ```
 >> ### POST "/user/add_preference"
 >   ```

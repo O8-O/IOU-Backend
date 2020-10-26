@@ -185,7 +185,7 @@ function savePreference(req){
     });
 }
 
-function showPreference(id){
+function showUserPreference(id){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             db.preferences.findOne({
@@ -198,6 +198,25 @@ function showPreference(id){
             })
             .catch(err => {
                 reject(errorWrapper(101));
+            })
+        }, 100);
+    });
+}
+
+function showPreference(){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.findAll({
+                where: {
+                    user: "admin"
+                },
+                attributes: ['imageNum', 'image']
+            })
+            .then(result => {       
+                resolve(result);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
             })
         }, 100);
     });
@@ -281,6 +300,7 @@ module.exports = {
     showOneImage: showOneImage,
     deleteImage: deleteImage,
     savePreference: savePreference,
+    showUserPreference: showUserPreference,
     showPreference: showPreference,
     addPreference: addPreference,
     findUserByEmail: findUserByEmail,
