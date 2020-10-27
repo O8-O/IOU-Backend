@@ -43,7 +43,7 @@ router.post('/sign_in', (req, res, next) => {
     });    
 });
 
-router.get('/log_in_status', (req, res, next) => {
+router.post('/log_in_status', (req, res, next) => {
     user.loginCheck(req.session, (err, result) => {
         if(err){
             return next(err);
@@ -65,7 +65,7 @@ router.post('/log_in', (req, res, next) => {
     })
 });
 
-router.get('/log_out', (req, res, next) => {    
+router.post('/log_out', (req, res, next) => {    
     user.loginCheck(req.session, (err, result) => {
         if(err){
             return next(err);
@@ -85,7 +85,7 @@ router.post('/upload_image', upload.single('imgFile'), async (req, res, next) =>
     }
 });
 
-router.get('/show_all_image', async (req, res, next) => {
+router.post('/show_all_image', async (req, res, next) => {
     try{
         var list = await user.showAllImage(req.body.id);
         return res.json({"result" : list});
@@ -94,10 +94,22 @@ router.get('/show_all_image', async (req, res, next) => {
     }
 });
 
-router.get('/show_one_image', async (req, res, next) => {
+router.post('/show_one_image', async (req, res, next) => {
     try{
         var result = await user.showOneImage(req.body.imageNum);
         return res.json({"result" : result});
+    } catch(err){
+        return next(err);
+    }
+});
+
+router.post('/show_changed_image', async (req, res, next) => {
+    try{
+        var parent = await user.showOneImage(req.body.imageNum);
+        var parentImage = parent.image;
+        var parentImageNum = parent.imageNum;
+        var result = await user.showChangedImage(req.body.imageNum);
+        return res.json({"parent" : parentImageNum, "parent_image" : parentImage, result});
     } catch(err){
         return next(err);
     }
@@ -129,7 +141,7 @@ router.post('/save_preference', async (req, res, next) => {
     }
 });
 
-router.get('/show_user_preference', async (req, res, next) => {
+router.post('/show_user_preference', async (req, res, next) => {
     try{
         var result = await user.showUserPreference(req.body.id);                
         data = JSON.parse(result.image);  
@@ -140,7 +152,7 @@ router.get('/show_user_preference', async (req, res, next) => {
     }
 });
 
-router.get('/show_preference', async (req, res, next) => {
+router.post('/show_preference', async (req, res, next) => {
     try{        
         var list = await user.showPreference();    
         return res.json({"result" : list});
@@ -164,7 +176,7 @@ router.post('/add_preference', async (req, res, next) => {
     }
 });
 
-router.get('/find_id', async (req, res, next) => {
+router.post('/find_id', async (req, res, next) => {
     try{
         var result = await user.findUserByEmail(req.body.email);   
         return res.json({"result" : result.ID});
@@ -189,6 +201,5 @@ router.post('/reset_password', async (req, res, next) => {
         return next(err);
     }
 });
-
 
 module.exports = router;

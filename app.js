@@ -8,7 +8,7 @@ const errorHandler = require('./middleware/error_handler');
 const schedule = require('node-schedule');
 const db = require('./models');
 const multer = require('multer');
-const ml = require('./util/IOU-ML/mlWrapper');
+// const ml = require('./util/IOU-ML/mlWrapper');
 
 var running = [];
 module.exports.running = running;
@@ -40,72 +40,49 @@ app.use('/hot_board', require('./routes/hot_board'));
 app.use('/comment', require('./routes/comment'));
 app.use('/recommend', require('./routes/recommend'));
 
-schedule.scheduleJob("*/5 * * * * *", () => {
-    console.log("HI");
-    if(running.length){
-        var imageNum = running.shift();
-        db.images.findOne({
-            where: {
-                imageNum: imageNum
-            }
-        })
-        .then(result => {       
-            ml.getStyleChangedImage(result.dataValues.image, [""]).then(
-                (data) => {
-                    var len = data.length;
-                    var loop = data[len - 1];
-                    setTimeout(() => {
-                        for(var i = len - 2; i > len - loop - 2; i--){
-                            console.log("WHY");
-                            db.changed_images.create({
-                                user: result.dataValues.user,
-                                parentImage: result.dataValues.imageNum,
-                                image: data[i]
-                            })
-                            .then(result => {       
-                                console.log(result.dataValues);
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            })
-                        }
-                        console.log("success");     
-                    }, 1000);
-                },
-                (err) => {
-                    console.log(err);
-                }
-            )
-
-            // data = ["HOW", "C:\\Users\\KDW\\Desktop\\represent\\interior(1)", "C:\\Users\\KDW\\Desktop\\represent\\interior(1)", "2"];
-            // var len = data.length;
-            // var loop = data[len - 1];
-            // setTimeout(() => {
-            //     console.log(len, loop, result.dataValues.user, result.dataValues.image);
-            //     for(var i = len - 2; i > len - loop - 2; i--){
-            //         console.log("WHY");
-            //         db.changed_images.create({
-            //             user: result.dataValues.user,
-            //             parentImage: result.dataValues.imageNum,
-            //             image: data[i]
-            //         })
-            //         .then(result => {       
-            //             console.log(result.dataValues);
-            //         })
-            //         .catch(err => {
-            //             console.log(err);
-            //         })
-            //     }
-            //     console.log("success");     
-            // }, 1000);
-               
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
+// schedule.scheduleJob("*/5 * * * * *", () => {
+//     console.log("HI");
+//     if(running.length){
+//         var imageNum = running.shift();
+//         db.images.findOne({
+//             where: {
+//                 imageNum: imageNum
+//             }
+//         })
+//         .then(result => {       
+//             ml.getStyleChangedImage(result.dataValues.image, [""]).then(
+//                 (data) => {
+//                     var len = data.length;
+//                     var loop = data[len - 1];
+//                     setTimeout(() => {
+//                         for(var i = len - 2; i > len - loop - 2; i--){
+//                             console.log("WHY");
+//                             db.changed_images.create({
+//                                 user: result.dataValues.user,
+//                                 parentImage: result.dataValues.imageNum,
+//                                 image: data[i]
+//                             })
+//                             .then(result => {       
+//                                 console.log(result.dataValues);
+//                             })
+//                             .catch(err => {
+//                                 console.log(err);
+//                             })
+//                         }
+//                         console.log("success");     
+//                     }, 1000);
+//                 },
+//                 (err) => {
+//                     console.log(err);
+//                 }
+//             )               
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         })
+//     }
     
-});
+// });
 
 app.use([errorHandler.logHandler, errorHandler.httpSender]);
 

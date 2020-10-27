@@ -142,6 +142,25 @@ function showOneImage(imageNum){
     });
 }
 
+function showChangedImage(imageNum){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.changed_images.findAll({
+                where: {
+                    parentImage: imageNum
+                },
+                attributes: ['imageNum', 'image']
+            })
+            .then(result => {       
+                resolve(result);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
+            })
+        }, 100);
+    });
+}
+
 function deleteImage(link){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -298,6 +317,7 @@ module.exports = {
     saveImage: saveImage,
     showAllImage: showAllImage,
     showOneImage: showOneImage,
+    showChangedImage: showChangedImage,
     deleteImage: deleteImage,
     savePreference: savePreference,
     showUserPreference: showUserPreference,
