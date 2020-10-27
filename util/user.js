@@ -24,7 +24,7 @@ function errorWrapper(errorType, err){
             err.message = "Fail to upload image";
             break;
         case 105:
-            err.message = "Fail to show iamge";
+            err.message = "Fail to show image";
             break;
         case 106:
             err.message = "Fail to delete image";
