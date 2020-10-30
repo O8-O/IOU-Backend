@@ -3,7 +3,8 @@ const router = express.Router();
 const models = require('../models');
 const user = require('../util/user');
 const multer = require('multer');
-const { running } = require('../app');
+var fs = require('fs');
+var running = require('../app');
 
 const storage = multer.diskStorage({
     destination: function(req, file, callback){        
@@ -130,6 +131,16 @@ router.post('/delete_image', async (req, res, next) => {
     } catch(err){
         return next(err);
     }
+});
+
+router.post('/download_image', (req, res) => {
+    fs.readFile(req.body.image, (err, data) => {
+        res.writeHead(200, {"Content-Type": "image/jpeg"});
+        res.write(data);
+        // console.log(data, "DATA 입니다");
+        // console.log(res, "res입니다.");
+        res.end();
+    });
 });
 
 router.post('/save_preference', async (req, res, next) => {

@@ -8,7 +8,7 @@ const errorHandler = require('./middleware/error_handler');
 const schedule = require('node-schedule');
 const db = require('./models');
 const multer = require('multer');
-// const ml = require('./util/IOU-ML/mlWrapper');
+// const MlWrapper = require('./util/IOU-ML/mlWrapper');
 
 var running = [];
 module.exports.running = running;
@@ -40,6 +40,7 @@ app.use('/hot_board', require('./routes/hot_board'));
 app.use('/comment', require('./routes/comment'));
 app.use('/recommend', require('./routes/recommend'));
 
+// ml = new MlWrapper();
 // schedule.scheduleJob("*/5 * * * * *", () => {
 //     console.log("HI");
 //     if(running.length){
@@ -80,8 +81,7 @@ app.use('/recommend', require('./routes/recommend'));
 //         .catch(err => {
 //             console.log(err);
 //         })
-//     }
-    
+//     }    
 // });
 
 app.use([errorHandler.logHandler, errorHandler.httpSender]);
