@@ -4,7 +4,7 @@ const models = require('../models');
 const user = require('../util/user');
 const multer = require('multer');
 var fs = require('fs');
-var running = require('../app');
+var { running } = require('../app');
 
 const storage = multer.diskStorage({
     destination: function(req, file, callback){        
@@ -134,13 +134,22 @@ router.post('/delete_image', async (req, res, next) => {
 });
 
 router.post('/download_image', (req, res) => {
-    fs.readFile(req.body.image, (err, data) => {
-        res.writeHead(200, {"Content-Type": "image/jpeg"});
-        res.write(data);
-        // console.log(data, "DATA 입니다");
-        // console.log(res, "res입니다.");
-        res.end();
-    });
+    try{
+        fs.readFile(req.body.image, (err, data) => {
+            process.on('uncaughtException', (err) => {
+                console.error(err);
+                return res.json();
+            })
+            res.writeHead(200, {"Content-Type": "image/jpeg"});
+            res.write(data);
+            
+            res.end();
+            // console.log(data);            
+            // return res.json({data});            
+        });
+    } catch(err){
+        return next(err);
+    }    
 });
 
 router.post('/save_preference', async (req, res, next) => {

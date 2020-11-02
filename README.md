@@ -146,6 +146,20 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 106, 107
 >   ```
+>> ### POST "/user/download_image"
+>   ```
+>   - USAGE : Download image data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           image : {imageURI}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY
+>           IMAGE
+>       - POSSIBLE ERROR : 
+>   ```
 >> ### POST "/user/save_preference"
 >   ```
 >   - USAGE : Save preference selection data of user's in DB.
