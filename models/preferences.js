@@ -8,27 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         image: {
             type: DataTypes.TEXT
-        },
-        area: {
-            type: DataTypes.INTEGER
-        },
-        avgDistance: {
-            type: DataTypes.INTEGER
-        },
-        cohesion: { 
-            type: DataTypes.INTEGER
-        },
-        plant: {
-            type: DataTypes.INTEGER
-        },
-        style: {
-            type: DataTypes.STRING
-        },
-        roomColor: {
-            type: DataTypes.STRING
-        },
-        lightColor: {
-            type: DataTypes.STRING
         }
     });
     return preferences;

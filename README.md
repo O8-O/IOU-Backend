@@ -146,6 +146,29 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 106, 107
 >   ```
+>> ### POST "/user/download_image"
+>   ```
+>   - USAGE : Download image data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           image : {imageURI}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY
+>           IMAGE
+>       - POSSIBLE ERROR : 
+>   ```
+>> ### GET "/user/download/:image"
+>   ```
+>   - USAGE : Download image data in DB with GET method.
+>   - REQUEST : It needs imageNum in URL.    
+>   - RESPONSE
+>       - SUCCESS
+>           - Show IMAGE
+>       - POSSIBLE ERROR : 105
+>   ```
 >> ### POST "/user/save_preference"
 >   ```
 >   - USAGE : Save preference selection data of user's in DB.
@@ -163,7 +186,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 108
 >   ```
->> ### POST "/user/show_preference"
+>> ### POST "/user/show_user_preference"
 >   ```
 >   - USAGE : Show preference selection data of user's.
 >   - REQUEST
@@ -178,6 +201,18 @@ Clone or download and Use npm install
 >               result : {result}
 >           }
 >       - POSSIBLE ERROR : 101
+>   ```
+>> ### POST "/user/show_preference"
+>   ```
+>   - USAGE : Show recommended preference data.
+>   - REQUEST : Nothing.
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 105
 >   ```
 >> ### POST "/user/add_preference"
 >   ```

@@ -1,6 +1,8 @@
 const crypto = require('crypto');
 const db = require('../models');
 const fs = require('fs');
+const path = require('path');
+const mime = require('mime');
 
 function errorWrapper(errorType, err){
     if(err){
@@ -24,7 +26,7 @@ function errorWrapper(errorType, err){
             err.message = "Fail to upload image";
             break;
         case 105:
-            err.message = "Fail to show iamge";
+            err.message = "Fail to show image";
             break;
         case 106:
             err.message = "Fail to delete image";
@@ -132,8 +134,27 @@ function showOneImage(imageNum){
                     imageNum: imageNum
                 }
             })
-            .then(result => {       
+            .then(result => {     
                 resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
+            })
+        }, 100);
+    });
+}
+
+function showChangedImage(imageNum){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.changed_images.findAll({
+                where: {
+                    parentImage: imageNum
+                },
+                attributes: ['imageNum', 'image']
+            })
+            .then(result => {       
+                resolve(result);
             })
             .catch(err => {
                 reject(errorWrapper(105));
@@ -185,7 +206,7 @@ function savePreference(req){
     });
 }
 
-function showPreference(id){
+function showUserPreference(id){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             db.preferences.findOne({
@@ -198,6 +219,25 @@ function showPreference(id){
             })
             .catch(err => {
                 reject(errorWrapper(101));
+            })
+        }, 100);
+    });
+}
+
+function showPreference(){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.findAll({
+                where: {
+                    user: "admin"
+                },
+                attributes: ['imageNum', 'image']
+            })
+            .then(result => {       
+                resolve(result);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
             })
         }, 100);
     });
@@ -279,8 +319,10 @@ module.exports = {
     saveImage: saveImage,
     showAllImage: showAllImage,
     showOneImage: showOneImage,
+    showChangedImage: showChangedImage,
     deleteImage: deleteImage,
     savePreference: savePreference,
+    showUserPreference: showUserPreference,
     showPreference: showPreference,
     addPreference: addPreference,
     findUserByEmail: findUserByEmail,
