@@ -160,6 +160,15 @@ Clone or download and Use npm install
 >           IMAGE
 >       - POSSIBLE ERROR : 
 >   ```
+>> ### GET "/user/download/:image"
+>   ```
+>   - USAGE : Download image data in DB with GET method.
+>   - REQUEST : It needs imageNum in URL.    
+>   - RESPONSE
+>       - SUCCESS
+>           - Show IMAGE
+>       - POSSIBLE ERROR : 105
+>   ```
 >> ### POST "/user/save_preference"
 >   ```
 >   - USAGE : Save preference selection data of user's in DB.

@@ -134,7 +134,7 @@ function showOneImage(imageNum){
                     imageNum: imageNum
                 }
             })
-            .then(result => {       
+            .then(result => {     
                 resolve(result.dataValues);
             })
             .catch(err => {

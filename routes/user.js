@@ -152,6 +152,25 @@ router.post('/download_image', (req, res) => {
     }    
 });
 
+router.get('/download/:image', async (req, res, next) => {
+    try{
+        var imageData = await user.showOneImage(req.params.image);
+        
+        fs.readFile(imageData.image, (err, data) => {
+            process.on('uncaughtException', (err) => {
+                console.error(err);
+                return res.json();
+            })
+            res.writeHead(200, {"Content-Type": "image/jpeg"});
+            res.write(data);
+            
+            res.end();          
+        });
+    } catch(err){
+        return next(err);
+    } 
+});
+
 router.post('/save_preference', async (req, res, next) => {
     try{
         var result = await user.savePreference(req);
