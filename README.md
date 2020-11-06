@@ -80,6 +80,191 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 103
 >   ```
+>> ### POST "/user/upload_image"
+>   ```
+>   - USAGE : Upload and make image data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           imgFile : {imageFile}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 104
+>   ```
+>> ### GET "/user/show_all_image"
+>   ```
+>   - USAGE : Show user's uploaded image.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {list}
+>           }
+>       - POSSIBLE ERROR : 105
+>   ```
+>> ### GET "/user/show_one_image"
+>   ```
+>   - USAGE : Show user's specific uploaded image.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           imageNum : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 105
+>   ```
+>> ### POST "/user/delete_image"
+>   ```
+>   - USAGE : Delete image data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           imageNum : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 106, 107
+>   ```
+>> ### POST "/user/download_image"
+>   ```
+>   - USAGE : Download image data in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           image : {imageURI}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY
+>           IMAGE
+>       - POSSIBLE ERROR : 
+>   ```
+>> ### GET "/user/download/:image"
+>   ```
+>   - USAGE : Download image data in DB with GET method.
+>   - REQUEST : It needs imageNum in URL.    
+>   - RESPONSE
+>       - SUCCESS
+>           - Show IMAGE
+>       - POSSIBLE ERROR : 105
+>   ```
+>> ### POST "/user/save_preference"
+>   ```
+>   - USAGE : Save preference selection data of user's in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           list : {array of imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 108
+>   ```
+>> ### POST "/user/show_user_preference"
+>   ```
+>   - USAGE : Show preference selection data of user's.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 101
+>   ```
+>> ### POST "/user/show_preference"
+>   ```
+>   - USAGE : Show recommended preference data.
+>   - REQUEST : Nothing.
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 105
+>   ```
+>> ### POST "/user/add_preference"
+>   ```
+>   - USAGE : Add preference selection data of user's in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           image : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 109
+>   ```
+>> ### POST "/user/find_id"
+>   ```
+>   - USAGE : Find user's ID.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           email : {userEmail}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {userID}
+>           }
+>       - POSSIBLE ERROR : 101
+>   ```
+>> ### POST "/user/reset_password"
+>   ```
+>   - USAGE : Reset user's password.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           email : {userEmail},
+>           password: {newPassword}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 107, 110
+>   ```
 >
 > ## free_board
 >> ### GET "/free_board/show"
@@ -471,6 +656,62 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 103,
 >               msg : "Not valid session"
+>           }
+>   - case 104 : Fail to upload image.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 104,
+>               msg : "Fail to upload image"
+>           }
+>   - case 105 : Fail to show image.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 105,
+>               msg : "Fail to show image"
+>           }
+>   - case 106 : Fail to delete image.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 106,
+>               msg : "Fail to delete image"
+>           }
+>   - case 107 : Current user's id doesn't match with image's userID.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 107,
+>               msg : "ID doesn't match"
+>           }
+>   - case 108 : Fail to save preference of current user's.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 108,
+>               msg : "Fail to save preference"
+>           }
+>   - case 109 : Fail to add preference of current user's.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 109,
+>               msg : "Fail to add preference"
+>           }
+>   - case 110 : Fail to update user's password.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 110,
+>               msg : "Fail to update password"
 >           }
 >   ```
 >
