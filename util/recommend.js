@@ -174,9 +174,6 @@ function deleteFreeRecommend(req){
                 }                
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
@@ -196,9 +193,6 @@ function deleteVoteRecommend(req){
                 }                
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {

@@ -267,7 +267,7 @@ Clone or download and Use npm install
 >   ```
 >
 > ## free_board
->> ### GET "/free_board/show"
+>> ### POST "/free_board/show_all"
 >   ```
 >   - USAGE : Get all free board data.
 >   - REQUEST : Nothing.
@@ -277,9 +277,9 @@ Clone or download and Use npm install
 >           {
 >               result : {postData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 201
 >   ```
->> ### GET "/free_board/showAllUser"
+>> ### POST "/free_board/show_all_user_board"
 >   ```
 >   - USAGE : Get current user's entire free board data.
 >   - REQUEST
@@ -293,9 +293,9 @@ Clone or download and Use npm install
 >           {
 >               result : {postData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 201
 >   ```
->> ### GET "/free_board/showOne"
+>> ### GET "/free_board/show_one"
 >   ```
 >   - USAGE : Get one specific free board data.
 >   - REQUEST
@@ -310,7 +310,7 @@ Clone or download and Use npm install
 >               board : {postData},
 >               comment : {commentData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 201
 >   ```
 >> ### POST "/free_board/create"
 >   ```
@@ -346,7 +346,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 107, 202
 >   ```
 >
 > ## vote_board
@@ -712,6 +712,22 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 110,
 >               msg : "Fail to update password"
+>           }
+>   - case 201 : No Free Board Post exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 201,
+>               msg : "No Free Board Post exists"
+>           }
+>   - case 202 : Fail to delete Free Board Post.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 202,
+>               msg : "Fail to delete Free Board Post"
 >           }
 >   ```
 >

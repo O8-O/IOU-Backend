@@ -1,17 +1,37 @@
 const db = require('../models');
 
+function errorWrapper(errorType, err){
+    if(err){
+        err.type = 0;
+        err.message = "Unexpected error";
+        return err;
+    }
+    err = new Error();
+
+    switch(errorType){
+        case 201:
+            err.message = "No Free Board Post exists";
+            break;
+        case 202:
+            err.message = "Fail to delete Free Board Post";
+            break;    
+    }
+    err.type = errorType;
+    return err;
+}
+
 function showAll(callback){
     db.free_boards.findAll({
         where:{}
     })
-    .then(result => {0
-        if(!result){
-            return callback(err);
+    .then(result => {
+        if(result.length == 0){
+            return callback(errorWrapper(201));
         }
         return callback(null, result);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(0, err));
     })
 }
 
@@ -25,7 +45,7 @@ function showAllPromise(){
                 resolve(result);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(201));
             })
         }, 100);
     });
@@ -38,13 +58,13 @@ function showAllUserBoard(id, callback){
         }
     })
     .then(result => {
-        if(!result){
-            return callback(err);
+        if(result.length == 0){
+            return callback(errorWrapper(201));
         }
         return callback(null, result);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(0, err));
     })
 }
 
@@ -55,13 +75,13 @@ function showOneBoard(req, callback){
         }
     })
     .then(result => {
-        if(!result){
-            return callback(err);
+        if(result.length == 0){
+            return callback(errorWrapper(201));
         }
         return callback(null, result.dataValues);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(201));
     })
 }
 
@@ -74,13 +94,13 @@ function showOnePromise(req){
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
+                if(result.length == 0){
+                    reject(errorWrapper(201));
                 }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(201));
             })
         }, 100);
     });
@@ -112,13 +132,10 @@ function deleteBoard(req){
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(202));
             })
         }, 100);
     });

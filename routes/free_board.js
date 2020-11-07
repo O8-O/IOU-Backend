@@ -20,7 +20,7 @@ var upload = multer({
     storage: storage
 });
 
-router.get('/show', (req, res, next) => {
+router.post('/show_all', (req, res, next) => {
     freeBoard.showAll((err, postData) => {
         if(err){
             return next(err);
@@ -29,7 +29,7 @@ router.get('/show', (req, res, next) => {
     })
 })
 
-router.get('/showAllUser', (req, res, next) => {
+router.post('/show_all_user_board', (req, res, next) => {
     freeBoard.showAllUserBoard(req.body.id, (err, postData) => {
         if(err){
             return next(err);
@@ -38,7 +38,7 @@ router.get('/showAllUser', (req, res, next) => {
     })
 });
 
-router.get('/showOne', (req, res, next) => {
+router.post('/show_one', (req, res, next) => {
     freeBoard.showOneBoard(req, (err, postData) => {
         if(err){
             return next(err);
@@ -128,8 +128,12 @@ router.post('/delete', async (req, res, next) => {
         var post = await freeBoard.showOnePromise(req);
 
         if(post.writer != req.body.id){
-            throw new Error();
+            err = new Error();
+            err.type = 107;
+            err.message = "ID doesn't match"
+            throw err;
         }
+        
         var commentResult = await comment.deletePostComment(req, 1);    
         var recommendResult = await recommend.deleteFreeRecommend(req);  
         if (!post.contentImage){
