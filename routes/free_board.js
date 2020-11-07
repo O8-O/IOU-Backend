@@ -9,7 +9,8 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function(req, file, callback){
-        callback(null, './upload/');
+        directory = __dirname.replace(/routes/g, 'upload\\');
+        callback(null, directory);
     },
     filename: function(req, file, callback){
         callback(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);

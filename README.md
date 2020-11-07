@@ -295,7 +295,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 201
 >   ```
->> ### GET "/free_board/show_one"
+>> ### POST "/free_board/show_one"
 >   ```
 >   - USAGE : Get one specific free board data.
 >   - REQUEST
