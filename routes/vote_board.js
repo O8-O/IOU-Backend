@@ -9,7 +9,8 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function(req, file, callback){
-        callback(null, './upload/');
+        directory = __dirname.replace(/routes/g, 'upload\\');
+        callback(null, directory);
     },
     filename: function(req, file, callback){
         callback(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
@@ -20,7 +21,7 @@ var upload = multer({
     storage: storage
 });
 
-router.get('/show', (req, res, next) => {
+router.post('/show_all', (req, res, next) => {
     voteBoard.showAll((err, postData) => {
         if(err){
             return next(err);
@@ -29,7 +30,7 @@ router.get('/show', (req, res, next) => {
     })
 })
 
-router.get('/showAllUser', (req, res, next) => {
+router.post('/show_all_user_board', (req, res, next) => {
     voteBoard.showAllUserBoard(req.body.id, (err, postData) => {
         if(err){
             return next(err);
@@ -38,7 +39,7 @@ router.get('/showAllUser', (req, res, next) => {
     })
 });
 
-router.get('/showOne', async (req, res, next) => {
+router.post('/show_one', async (req, res, next) => {
     var count = await voteBoard.countVote(req);
     voteBoard.showOneBoard(req, (err, postData) => {
         if(err){
@@ -55,7 +56,10 @@ router.get('/showOne', async (req, res, next) => {
 
 router.post('/create', upload.array('imgFile'), (req, res, next) => {
     if(!req.files){
-        return next(new Error());
+        err = new Error();
+        err.type = 307;
+        err.message = "No image received";
+        return next(err);
     }
     else{
         image.saveMultiImage(req, (err, result) => {
@@ -86,7 +90,10 @@ router.post('/delete', async (req, res, next) => {
         var post = await voteBoard.showOnePromise(req);
    
         if(post.writer != req.body.id){
-            throw new Error();
+            err = new Error();
+            err.type = 107;
+            err.message = "ID doesn't match"
+            throw err;
         } 
         var deleteAllVote = await voteBoard.deleteAllVote(req);
         var commentResult = await comment.deletePostComment(req, 2);   
@@ -106,7 +113,10 @@ router.post('/vote', async (req, res, next) => {
         var showResult = await voteBoard.showUserVote(req);
 
         if(showResult){
-            throw new Error();
+            err = new Error();
+            err.type = 308;
+            err.message = "Already voted";
+            throw err;
         }        
         var voteResult = await voteBoard.makeVote(req);
         return res.json({"result" : true});
@@ -115,7 +125,7 @@ router.post('/vote', async (req, res, next) => {
     } 
 });
 
-router.get('/showVote', async (req, res, next) => {
+router.post('/show_vote', async (req, res, next) => {
     try{
         var result = await voteBoard.showVote(req);
         return res.json({"result" : result});
@@ -124,12 +134,15 @@ router.get('/showVote', async (req, res, next) => {
     } 
 })
 
-router.post('/cancelVote', async (req, res, next) => {
+router.post('/cancel_vote', async (req, res, next) => {
     try{
         var showResult = await voteBoard.showUserVote(req);      
         
         if(showResult.postNum != req.body.postNum){
-            throw new Error();
+            err = new Error();
+            err.type = 309;
+            err.message = "Post Num doesn't match";
+            throw err;
         }
         var deleteResult = await voteBoard.deleteVote(req);
         return res.json({"result" : true});

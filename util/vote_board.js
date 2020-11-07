@@ -1,17 +1,52 @@
 const db = require('../models');
 
+function errorWrapper(errorType, err){
+    if(err){
+        err.type = 0;
+        err.message = "Unexpected error";
+        return err;
+    }
+    err = new Error();
+
+    switch(errorType){
+        case 301:
+            err.message = "No Vote Board Post exists";
+            break;
+        case 302:
+            err.message = "Fail to delete Vote Board Post";
+            break;
+        case 303:
+            err.message = "Fail to make vote data in DB";
+            break;   
+        case 304:
+            err.message = "Fail to show vote data in DB";
+            break;
+        case 305:
+            err.message = "Fail to delete vote data in DB";
+            break;
+        case 306:
+            err.message = "Fail to count vote data in DB";
+            break;
+        // case 307 is set in routes/vote_boards.js
+        // case 308 is set in routes/vote_boards.js
+        // case 309 is set in routes/vote_boards.js
+    }
+    err.type = errorType;
+    return err;
+}
+
 function showAll(callback){
     db.vote_boards.findAll({
         where:{}
     })
     .then(result => {0
-        if(!result){
-            return callback(err);
+        if(result.length == 0){
+            return callback(errorWrapper(301));
         }
         return callback(null, result);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(0, err));
     })
 }
 
@@ -25,7 +60,7 @@ function showAllPromise(){
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(301));
             })
         }, 100);
     });
@@ -38,13 +73,13 @@ function showAllUserBoard(id, callback){
         }
     })
     .then(result => {
-        if(!result){
-            return callback(err);
+        if(result.length == 0){
+            return callback(errorWrapper(301));
         }
         return callback(null, result);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(0, err));
     })
 }
 
@@ -55,13 +90,13 @@ function showOneBoard(req, callback){
         }
     })
     .then(result => {
-        if(!result){
-            return callback(err);
+        if(result.length == 0){
+            return callback(errorWrapper(301));
         }
         return callback(null, result.dataValues);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(301));
     })
 }
 
@@ -74,13 +109,13 @@ function showOnePromise(req){
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
+                if(result.length == 0){
+                    reject(errorWrapper(301));
                 }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(301));
             })
         }, 100);
     });
@@ -95,13 +130,10 @@ function deleteBoard(req){
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(302));
             })
         }, 100);
     });
@@ -116,13 +148,10 @@ function makeVote(req){
                 choice: req.body.choice
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(303));
             })
         }, 100);
     });
@@ -137,13 +166,13 @@ function showVote(req){
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
+                if(result.length == 0){
+                    resolve(result);
                 }
                 resolve(result);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(304));
             })
         }, 100);
     }); 
@@ -181,13 +210,10 @@ function deleteVote(req){
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(305));
             })
         }, 100);
     });
@@ -205,7 +231,7 @@ function deleteAllVote(req){
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(305));
             })
         }, 100);
     });
@@ -224,7 +250,7 @@ function countVote(req){
             .then(result => {
                 count.count1 = result.count;
                 if(!result){
-                    reject(new Error());
+                    reject(errorWrapper(306));
                 }
                 db.votes.findAndCountAll({
                     where: {
@@ -235,16 +261,16 @@ function countVote(req){
                 .then(result => {
                     count.count2 = result.count;
                     if(!result){
-                        reject(new Error());
+                        reject(errorWrapper(306));
                     }
                     resolve(count);
                 })
                 .catch(err => {
-                    reject(err);
+                    reject(errorWrapper(0, err));
                 })
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(0, err));
             })
         }, 100);
     });

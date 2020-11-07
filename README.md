@@ -350,7 +350,7 @@ Clone or download and Use npm install
 >   ```
 >
 > ## vote_board
->> ### GET "/vote_board/show"
+>> ### POST "/vote_board/show_all"
 >   ```
 >   - USAGE : Get all vote board data.
 >   - REQUEST : Nothing.
@@ -360,9 +360,9 @@ Clone or download and Use npm install
 >           {
 >               result : {postData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 301
 >   ```
->> ### GET "/vote_board/showAllUser"
+>> ### POST "/vote_board/show_all_user_board"
 >   ```
 >   - USAGE : Get current user's entire vote board data.
 >   - REQUEST
@@ -376,9 +376,9 @@ Clone or download and Use npm install
 >           {
 >               result : {postData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 301
 >   ```
->> ### GET "/vote_board/showOne"
+>> ### GET "/vote_board/show_one"
 >   ```
 >   - USAGE : Get one specific vote board data.
 >   - REQUEST
@@ -393,7 +393,7 @@ Clone or download and Use npm install
 >               board : {postData},
 >               comment : {commentData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 301, 306
 >   ```
 >> ### POST "/vote_board/create"
 >   ```
@@ -413,7 +413,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 307
 >   ```
 >> ### POST "/vote_board/delete"
 >   ```
@@ -430,7 +430,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 107, 301, 302
 >   ```
 >> ### POST "/vote_board/vote"
 >   ```
@@ -448,9 +448,9 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 303, 308
 >   ```
->> ### GET "/vote_board/showVote"
+>> ### POST "/vote_board/show_vote"
 >   ```
 >   - USAGE : Show vote data in DB.
 >   - REQUEST
@@ -464,9 +464,9 @@ Clone or download and Use npm install
 >           {
 >               result : {result}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 304
 >   ```
->> ### POST "/vote_board/cancelVote"
+>> ### POST "/vote_board/cancel_vote"
 >   ```
 >   - USAGE : Delete vote data in DB.
 >   - REQUEST
@@ -481,7 +481,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 305, 309
 >   ```
 >
 > ## hot_board
