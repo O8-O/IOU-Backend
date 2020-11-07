@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('images', {
+        return queryInterface.createTable('changed_images', {
             imageNum: {
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
@@ -10,6 +10,10 @@ module.exports = {
             },
             user: {
                 type: Sequelize.STRING(20),
+                allowNull: false
+            },
+            parentImage: {
+                type: Sequelize.INTEGER,
                 allowNull: false
             },
             image: {
@@ -52,6 +56,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('images');
+        return queryInterface.dropTable('changed_images');
     }
 };
