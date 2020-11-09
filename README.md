@@ -87,7 +87,8 @@ Clone or download and Use npm install
 >       - BODY(JSON)
 >       {
 >           id : {userID},
->           imgFile : {imageFile}
+>           imgFile : {imageFile},
+>           lightColor : {lightColor}
 >       }
 >   - RESPONSE
 >       - SUCCESS

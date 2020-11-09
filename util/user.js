@@ -95,7 +95,8 @@ function saveImage(req){
         setTimeout(() => {
             db.images.create({
                 user: req.body.id,
-                image: req.file.path
+                image: req.file.path,
+                lightColor: req.body.lightColor
             })
             .then(result => {       
                 resolve(result.dataValues);
