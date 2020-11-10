@@ -330,7 +330,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 601
 >   ```
 >> ### POST "/free_board/delete"
 >   ```
@@ -347,7 +347,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 107, 202, 402, 504
+>       - POSSIBLE ERROR : 107, 202, 402, 504, 602
 >   ```
 >
 > ## vote_board
@@ -379,7 +379,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 301
 >   ```
->> ### GET "/vote_board/show_one"
+>> ### POST "/vote_board/show_one"
 >   ```
 >   - USAGE : Get one specific vote board data.
 >   - REQUEST
@@ -414,7 +414,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 307
+>       - POSSIBLE ERROR : 307, 601
 >   ```
 >> ### POST "/vote_board/delete"
 >   ```
@@ -431,7 +431,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 107, 301, 302, 402, 504
+>       - POSSIBLE ERROR : 107, 301, 302, 402, 504, 602
 >   ```
 >> ### POST "/vote_board/vote"
 >   ```
