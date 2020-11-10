@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const recommend = require('../util/recommend');
 
-router.get('/show', async (req, res, next) => {
+router.post('/show', async (req, res, next) => {
     try{
         var freeList = await recommend.orderFreeRecommend();
         // var voteList = await hotBoard.orderVoteRecommend();

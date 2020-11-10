@@ -1,5 +1,25 @@
 const db = require('../models');
 
+function errorWrapper(errorType, err){
+    if(err){
+        err.type = 0;
+        err.message = "Unexpected error";
+        return err;
+    }
+    err = new Error();
+
+    switch(errorType){
+        case 401:
+            err.message = "Fail to show comment";
+            break;
+        case 402:
+            err.message = "Fail to delete comment";
+            break;
+    }
+    err.type = errorType;
+    return err;
+}
+
 function showComment(postNum, postType, callback){
     db.comments.findAll({
         where:{
@@ -11,7 +31,7 @@ function showComment(postNum, postType, callback){
         return callback(null, result);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(0, err));
     })
 }
 
@@ -24,13 +44,10 @@ function showPromise(commentNum){
                 }
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(401));
             })
         }, 100);
     });
@@ -47,7 +64,7 @@ function makeComment(req, callback){
         return callback(null, result.dataValues);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(0, err));
     })
 }
 
@@ -62,7 +79,7 @@ function deleteComment(req, callback){
         return callback(null, result.dataValues);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(0, err));
     })
 }
 
@@ -93,7 +110,7 @@ function deletePostComment(req, postType){
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(402));
             })
         }, 100);
     });

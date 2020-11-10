@@ -347,7 +347,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 107, 202
+>       - POSSIBLE ERROR : 107, 202, 402, 504
 >   ```
 >
 > ## vote_board
@@ -431,7 +431,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 107, 301, 302
+>       - POSSIBLE ERROR : 107, 301, 302, 402, 504
 >   ```
 >> ### POST "/vote_board/vote"
 >   ```
@@ -486,7 +486,7 @@ Clone or download and Use npm install
 >   ```
 >
 > ## hot_board
->> ### GET "/hot_board/show"
+>> ### POST "/hot_board/show"
 >   ```
 >   - USAGE : Show all free_board in recommend DESC Order. (if same recommend count, date desc order)
 >   - REQUEST : Nothing.
@@ -496,11 +496,11 @@ Clone or download and Use npm install
 >           {
 >               result : {result}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 502
 >   ```
 >
 > ## comment
->> ### GET "/comment/show"
+>> ### POST "/comment/show"
 >   ```
 >   - USAGE : Show all comments data.
 >   - REQUEST
@@ -551,7 +551,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 107, 401
 >   ```
 >
 > ## recommend
@@ -570,7 +570,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 501, 503, 505
 >   ```
 >> ### POST "/recommend/vote"
 >   ```
@@ -587,7 +587,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 501, 503, 505
 >   ```
 >> ### POST "/recommend/freeCancel"
 >   ```
@@ -604,7 +604,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 501, 504, 506
 >   ```
 >> ### POST "/recommend/voteCancel"
 >   ```
@@ -621,7 +621,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 501, 504, 506
 >   ```
 >
 > ## ERROR CASE
@@ -729,6 +729,142 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 202,
 >               msg : "Fail to delete Free Board Post"
+>           }
+>   - case 301 : No Vote Board Post exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 301,
+>               msg : "No Vote Board Post exists"
+>           }
+>   - case 302 : Fail to delete Vote Board Post.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 302,
+>               msg : "Fail to delete Vote Board Post"
+>           }
+>   - case 303 : Fail to make vote data in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 303,
+>               msg : "Fail to make vote data in DB"
+>           }
+>   - case 304 : Fail to show vote data in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 304,
+>               msg : "Fail to show vote data in DB"
+>           }
+>   - case 305 : Fail to delete vote data in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 305,
+>               msg : "Fail to delete vote data in DB"
+>           }
+>   - case 306 : Fail to count vote data in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 306,
+>               msg : "Fail to count vote data in DB"
+>           }
+>   - case 307 : No image received.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 307,
+>               msg : "No image received"
+>           }
+>   - case 308 : Vote data already exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 308,
+>               msg : "Already voted"
+>           }
+>   - case 309 : Post Num doesn't match.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 309,
+>               msg : "Post Num doesn't match"
+>           }
+>   - case 401 : Fail to show comment.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 401,
+>               msg : "Fail to show comment"
+>           }
+>   - case 402 : Fail to delete comment.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 402,
+>               msg : "Fail to delete comment"
+>           }
+>   - case 501 : Fail to find recommend.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 501,
+>               msg : "Fail to find recommend"
+>           }
+>   - case 502 : Fail to order recommend.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 502,
+>               msg : "Fail to order recommend"
+>           }
+>   - case 503 : Fail to make recommend.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 503,
+>               msg : "Fail to make recommend"
+>           }
+>   - case 504 : Fail to delete recommend.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 504,
+>               msg : "Fail to delete recommend"
+>           }
+>   - case 505 : Recommend Data already exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 505,
+>               msg : "Already recommended"
+>           }
+>   - case 506 : No recommend Data exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 506,
+>               msg : "No recommend Data exists"
 >           }
 >   ```
 >
