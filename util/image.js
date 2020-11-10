@@ -1,6 +1,26 @@
 const db = require('../models');
 const fs = require('fs');
 
+function errorWrapper(errorType, err){
+    if(err){
+        err.type = 0;
+        err.message = "Unexpected error";
+        return err;
+    }
+    err = new Error();
+
+    switch(errorType){
+        case 601:
+            err.message = "Fail to save image";
+            break;
+        case 602:
+            err.message = "Fail to delete image";
+            break;
+    }
+    err.type = errorType;
+    return err;
+}
+
 function saveImage(req, callback){
     db.images.create({
         user: req.body.id,
@@ -10,7 +30,7 @@ function saveImage(req, callback){
         return callback(null, result.dataValues);
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(601));
     })
 }
 
@@ -28,11 +48,11 @@ function saveMultiImage(req, callback){
             return callback(null, result.dataValues);
         })
         .catch(err => {
-            return callback(err);
+            return callback(errorWrapper(601));
         })
     })
     .catch(err => {
-        return callback(err);
+        return callback(errorWrapper(601));
     })
 }
 
@@ -61,7 +81,7 @@ function deleteImage(link){
         setTimeout(() => {
             fs.unlink(link, (err) => {
                 if(err){
-                    reject(err);
+                    reject(errorWrapper(602));
                 }
                 link.replace(/\\/g, '\\');
                 db.images.destroy({
@@ -73,7 +93,7 @@ function deleteImage(link){
                     resolve(null, result.dataValues);
                 })
                 .catch(err => {
-                    reject(err);
+                    reject(errorWrapper(602));
                 })
             })
         }, 100);

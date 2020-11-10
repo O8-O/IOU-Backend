@@ -866,6 +866,22 @@ Clone or download and Use npm install
 >               errType : 506,
 >               msg : "No recommend Data exists"
 >           }
+>   - case 601 : Fail to save image in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 601,
+>               msg : "Fail to save image"
+>           }
+>   - case 602 : Fail to delete image in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 602,
+>               msg : "Fail to delete image"
+>           }
 >   ```
 >
 >
