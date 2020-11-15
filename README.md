@@ -309,7 +309,7 @@ Clone or download and Use npm install
 >           - BODY(JSON)
 >           {
 >               board : {postData},
->               comment : {commentData}
+>               comment : {count, rows}
 >           }
 >       - POSSIBLE ERROR : 201
 >   ```
@@ -392,7 +392,7 @@ Clone or download and Use npm install
 >           - BODY(JSON)
 >           {
 >               board : {postData},
->               comment : {commentData}
+>               comment : {count, rows}
 >           }
 >       - POSSIBLE ERROR : 301, 306
 >   ```

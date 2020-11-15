@@ -21,13 +21,13 @@ function errorWrapper(errorType, err){
 }
 
 function showComment(postNum, postType, callback){
-    db.comments.findAll({
+    db.comments.findAndCountAll({
         where:{
             postType: postType,
             postNum: postNum
         }
     })
-    .then(result => {        
+    .then(result => {      
         return callback(null, result);
     })
     .catch(err => {
