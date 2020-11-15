@@ -41,6 +41,9 @@ function errorWrapper(errorType, err){
         case 110:
             err.message = "Fail to update password";
             break;
+        case 111:
+            err.message = "Fail to update preference";
+            break;
     }
     err.type = errorType;
     return err;
@@ -244,28 +247,52 @@ function showPreference(){
     });
 }
 
-function addPreference(id, newData){
+function editPreference(req){
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            list = JSON.stringify(newData);
+        setTimeout(() => {         
+            list = JSON.stringify(req.body.list);
+
             db.preferences.update(
                 {
                     image: list
                 },
-                {                
-                where: {                    
-                    ID: id
-                }  
+                {
+                where: {
+                    ID: req.body.id
+                }   
             })
-            .then(result => { 
+            .then(result => {       
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(errorWrapper(109));
+                reject(errorWrapper(111));
             })
         }, 100);
     });
 }
+
+// function addPreference(id, newData){
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             list = JSON.stringify(newData);
+//             db.preferences.update(
+//                 {
+//                     image: list
+//                 },
+//                 {                
+//                 where: {                    
+//                     ID: id
+//                 }  
+//             })
+//             .then(result => { 
+//                 resolve(result.dataValues);
+//             })
+//             .catch(err => {
+//                 reject(errorWrapper(109));
+//             })
+//         }, 100);
+//     });
+// }
 
 function findUserByEmail(email){
     return new Promise((resolve, reject) => {
@@ -325,7 +352,8 @@ module.exports = {
     savePreference: savePreference,
     showUserPreference: showUserPreference,
     showPreference: showPreference,
-    addPreference: addPreference,
+    editPreference: editPreference,
+    // addPreference: addPreference,
     findUserByEmail: findUserByEmail,
     setPassword: setPassword
 }

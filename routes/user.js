@@ -200,20 +200,29 @@ router.post('/show_preference', async (req, res, next) => {
     }
 });
 
-router.post('/add_preference', async (req, res, next) => {
+router.post('/edit_preference', async (req, res, next) => {
     try{
-        var result = await user.showPreference(req.body.id);                
-        data = JSON.parse(result.image);  
-        data.shift();
-        data.push(req.body.image);
-
-        var add = await user.addPreference(req.body.id, data);
-
+        var result = await user.editPreference(req);
         return res.json({"result" : true});
     } catch(err){
         return next(err);
     }
 });
+
+// router.post('/add_preference', async (req, res, next) => {
+//     try{
+//         var result = await user.showPreference(req.body.id);                
+//         data = JSON.parse(result.image);  
+//         data.shift();
+//         data.push(req.body.image);
+
+//         var add = await user.addPreference(req.body.id, data);
+
+//         return res.json({"result" : true});
+//     } catch(err){
+//         return next(err);
+//     }
+// });
 
 router.post('/find_id', async (req, res, next) => {
     try{

@@ -766,6 +766,14 @@ Clone or download and Use npm install
 >               errType : 202,
 >               msg : "Fail to delete Free Board Post"
 >           }
+>   - case 203 : Fail to update contentText in Free Board Post.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 203,
+>               msg : "Fail to update contentText in DB"
+>           }
 >   - case 301 : No Vote Board Post exists in DB.
 >       - RESPONSE
 >           - BODY(JSON)
@@ -837,6 +845,14 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 309,
 >               msg : "Post Num doesn't match"
+>           }
+>   - case 310 : Fail to update contentText in Vote Board Post.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 310,
+>               msg : "Fail to update contentText in DB"
 >           }
 >   - case 401 : Fail to show comment.
 >       - RESPONSE
