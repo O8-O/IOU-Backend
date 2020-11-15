@@ -215,14 +215,14 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 105
 >   ```
->> ### POST "/user/add_preference"
+>> ### POST "/user/edit_preference"
 >   ```
->   - USAGE : Add preference selection data of user's in DB.
+>   - USAGE : Edit preference selection data of user's in DB.
 >   - REQUEST
 >       - BODY(JSON)
 >       {
 >           id : {userID},
->           image : {imageNum}
+>           list : {array of imageNum}
 >       }
 >   - RESPONSE
 >       - SUCCESS
@@ -230,7 +230,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 109
+>       - POSSIBLE ERROR : 111
 >   ```
 >> ### POST "/user/find_id"
 >   ```
@@ -749,6 +749,14 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 110,
 >               msg : "Fail to update password"
+>           }
+>   - case 111 : Fail to update user's preference.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 111,
+>               msg : "Fail to update preference"
 >           }
 >   - case 201 : No Free Board Post exists in DB.
 >       - RESPONSE
