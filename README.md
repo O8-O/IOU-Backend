@@ -29,7 +29,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 101
 >   ```
->> ### GET "/user/log_in_status"
+>> ### POST "/user/log_in_status"
 >   ```
 >   - USAGE : Check log_in status of user.
 >   - REQUEST : Nothing.
@@ -63,7 +63,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 101, 102
 >   ```
->> ### GET "/user/log_out"
+>> ### POST "/user/log_out"
 >   ```
 >   - USAGE : Request log_out of user.
 >   - REQUEST : Nothing.
@@ -98,7 +98,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 104
 >   ```
->> ### GET "/user/show_all_image"
+>> ### POST "/user/show_all_image"
 >   ```
 >   - USAGE : Show user's uploaded image.
 >   - REQUEST
@@ -114,7 +114,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 105
 >   ```
->> ### GET "/user/show_one_image"
+>> ### POST "/user/show_one_image"
 >   ```
 >   - USAGE : Show user's specific uploaded image.
 >   - REQUEST
