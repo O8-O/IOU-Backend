@@ -35,17 +35,20 @@ function saveImage(req, callback){
 }
 
 function saveMultiImage(req, callback){
+    data = {};
     db.images.create({
         user: req.body.id,
         image: req.files[0].path
     })
-    .then(result => {       
+    .then(result => {   
+        data.image1 = result.imageNum;   
         db.images.create({
             user: req.body.id,
             image: req.files[1].path
         }) 
         .then(result => {
-            return callback(null, result.dataValues);
+            data.image2 = result.imageNum;
+            return callback(null, data);
         })
         .catch(err => {
             return callback(errorWrapper(601));

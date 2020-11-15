@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const user = require('../util/user');
 const freeBoard = require('../util/free_board');
 const image = require('../util/image');
 const comment = require('../util/comment');
@@ -159,7 +160,8 @@ router.post('/delete', async (req, res, next) => {
             var result = await freeBoard.deleteBoard(req);
         }
         else{
-            var imageResult = await image.deleteImage(post.contentImage);
+            var image1 = await user.showOneImage(post.contentImage);
+            var imageResult = await image.deleteImage(image1.image);  
             var result = await freeBoard.deleteBoard(req);
         }
         return res.json({"result" : true});

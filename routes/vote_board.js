@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const user = require('../util/user');
 const voteBoard = require('../util/vote_board');
 const image = require('../util/image');
 const comment = require('../util/comment');
@@ -66,11 +67,12 @@ router.post('/create', upload.array('imgFile'), (req, res, next) => {
             if(err){
                 return next(err);
             }
+            console.log(result)
             models.vote_boards.create({
                 title: req.body.title,
                 contentText: req.body.contentText,
-                contentImage1: req.files[0].path,
-                contentImage2: req.files[1].path,
+                contentImage1: result.image1,
+                contentImage2: result.image2,
                 writer: req.body.id,
                 views: 0,
                 recommend: 0
@@ -116,8 +118,10 @@ router.post('/delete', async (req, res, next) => {
         var deleteAllVote = await voteBoard.deleteAllVote(req);
         var commentResult = await comment.deletePostComment(req, 2);   
         var recommendResult = await recommend.deleteVoteRecommend(req);  
-        var imageResult1 = await image.deleteImage(post.contentImage1);   
-        var imageResult2 = await image.deleteImage(post.contentImage2);
+        var image1 = await user.showOneImage(post.contentImage1);
+        var image2 = await user.showOneImage(post.contentImage2);
+        var imageResult1 = await image.deleteImage(image1.image);   
+        var imageResult2 = await image.deleteImage(image2.image);
         var result = await voteBoard.deleteBoard(req);   
 
         return res.json({"result" : true});
