@@ -15,6 +15,9 @@ function errorWrapper(errorType, err){
         case 202:
             err.message = "Fail to delete Free Board Post";
             break;    
+        case 203:
+            err.message = "Fail to update contentText in DB";
+            break;
     }
     err.type = errorType;
     return err;
@@ -123,6 +126,28 @@ function showOnePromise(req){
 //     })
 // }
 
+function editText(req){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.free_boards.update(
+                {
+                    contentText: req.body.contentText
+                },
+                {
+                where: {
+                    postNum: req.body.postNum
+                }
+            })
+            .then(result => {
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(203));
+            })
+        }, 100);
+    });
+}
+
 function deleteBoard(req){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -147,5 +172,6 @@ module.exports = {
     showAllUserBoard: showAllUserBoard,
     showOneBoard: showOneBoard,
     showOnePromise: showOnePromise,
+    editText: editText,
     deleteBoard: deleteBoard    
 }

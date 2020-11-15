@@ -332,6 +332,24 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 601
 >   ```
+>> ### POST "/free_board/edit_text"
+>   ```
+>   - USAGE : Edit free board contentText in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           contentText : {contentText},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 107, 203
+>   ```
 >> ### POST "/free_board/delete"
 >   ```
 >   - USAGE : Delete free board data in DB.
@@ -415,6 +433,24 @@ Clone or download and Use npm install
 >               result : true
 >           }
 >       - POSSIBLE ERROR : 307, 601
+>   ```
+>> ### POST "/vote_board/edit_text"
+>   ```
+>   - USAGE : Edit vote board contentText in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           contentText : {contentText},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 107, 310
 >   ```
 >> ### POST "/vote_board/delete"
 >   ```

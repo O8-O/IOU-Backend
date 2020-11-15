@@ -85,6 +85,24 @@ router.post('/create', upload.array('imgFile'), (req, res, next) => {
     }
 });
 
+router.post('/edit_text', async (req, res, next) => {
+    try{
+        var post = await voteBoard.showOnePromise(req);
+
+        if(post.writer != req.body.id){
+            err = new Error();
+            err.type = 107;
+            err.message = "ID doesn't match"
+            throw err;
+        }
+
+        var edit = await voteBoard.editText(req);
+        return res.json({"result" : true});
+    } catch(err) {
+        return next(err);
+    }  
+});
+
 router.post('/delete', async (req, res, next) => {
     try{                 
         var post = await voteBoard.showOnePromise(req);

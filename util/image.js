@@ -26,7 +26,7 @@ function saveImage(req, callback){
         user: req.body.id,
         image: req.file.path
     })
-    .then(result => {       
+    .then(result => {    
         return callback(null, result.dataValues);
     })
     .catch(err => {

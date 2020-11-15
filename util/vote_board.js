@@ -30,6 +30,9 @@ function errorWrapper(errorType, err){
         // case 307 is set in routes/vote_boards.js
         // case 308 is set in routes/vote_boards.js
         // case 309 is set in routes/vote_boards.js
+        case 310:
+            err.message = "Fail to update contentText in DB";
+            break;
     }
     err.type = errorType;
     return err;
@@ -116,6 +119,28 @@ function showOnePromise(req){
             })
             .catch(err => {
                 reject(errorWrapper(301));
+            })
+        }, 100);
+    });
+}
+
+function editText(req){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.vote_boards.update(
+                {
+                    contentText: req.body.contentText
+                },
+                {
+                where: {
+                    postNum: req.body.postNum
+                }
+            })
+            .then(result => {
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(310));
             })
         }, 100);
     });
@@ -286,6 +311,7 @@ module.exports = {
     makeVote: makeVote,
     showVote: showVote,
     showUserVote: showUserVote,
+    editText: editText,
     deleteVote: deleteVote,
     deleteAllVote: deleteAllVote,
     countVote: countVote

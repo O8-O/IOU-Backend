@@ -77,7 +77,7 @@ router.post('/create', upload.single('imgFile'), (req, res, next) => {
             models.free_boards.create({
                 title: req.body.title,
                 contentText: req.body.contentText,
-                contentImage: req.file.path,
+                contentImage: result.imageNum,
                 writer: req.body.id,
                 views: 0,
                 recommend: 0
@@ -123,6 +123,24 @@ router.post('/create', upload.single('imgFile'), (req, res, next) => {
 //         })           
 //     })
 // });
+
+router.post('/edit_text', async (req, res, next) => {
+    try{
+        var post = await freeBoard.showOnePromise(req);
+
+        if(post.writer != req.body.id){
+            err = new Error();
+            err.type = 107;
+            err.message = "ID doesn't match"
+            throw err;
+        }
+
+        var edit = await freeBoard.editText(req);
+        return res.json({"result" : true});
+    } catch(err) {
+        return next(err);
+    }  
+});
 
 router.post('/delete', async (req, res, next) => {    
     try{                 
