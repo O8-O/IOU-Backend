@@ -365,7 +365,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 107, 202, 402, 504, 602
+>       - POSSIBLE ERROR : 105, 107, 202, 402, 504, 602
 >   ```
 >
 > ## vote_board
@@ -467,7 +467,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 107, 301, 302, 402, 504, 602
+>       - POSSIBLE ERROR : 105, 107, 301, 302, 402, 504, 602
 >   ```
 >> ### POST "/vote_board/vote"
 >   ```
