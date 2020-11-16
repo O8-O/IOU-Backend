@@ -26,7 +26,7 @@ router.post('/show_all', (req, res, next) => {
     freeBoard.showAll((err, postData) => {
         if(err){
             return next(err);
-        }
+        }        
         return res.json({"result": postData});
     })
 })
@@ -45,6 +45,8 @@ router.post('/show_one', (req, res, next) => {
         if(err){
             return next(err);
         }
+        var imageData = JSON.parse(postData.contentImage);
+        postData.contentImage = imageData;
         comment.showComment(postData.postNum, 1, (err, commentData) => {
             if(err){
                 return next(err);
@@ -54,8 +56,47 @@ router.post('/show_one', (req, res, next) => {
     })
 });
 
-router.post('/create', upload.single('imgFile'), (req, res, next) => {
-    if(!req.file){
+// router.post('/create', upload.single('imgFile'), (req, res, next) => {
+//     if(!req.file){
+//         models.free_boards.create({
+//             title: req.body.title,
+//             contentText: req.body.contentText,
+//             writer: req.body.id,
+//             views: 0,
+//             recommend: 0
+//         })
+//         .then(result => {
+//             return res.json({"result": true});
+//         })
+//         .catch(err => {
+//             return next(err);
+//         })
+//     }
+//     else{
+//         image.saveImage(req, (err, result) => {
+//             if(err){
+//                 return next(err);
+//             }
+//             models.free_boards.create({
+//                 title: req.body.title,
+//                 contentText: req.body.contentText,
+//                 contentImage: result.imageNum,
+//                 writer: req.body.id,
+//                 views: 0,
+//                 recommend: 0
+//             })
+//             .then(result => {
+//                 return res.json({"result": true});
+//             })
+//             .catch(err => {
+//                 return next(err);
+//             })
+//         })        
+//     }
+// });
+
+router.post('/create', upload.array('imgFile'), async (req, res, next) => {
+    if(!req.files){
         models.free_boards.create({
             title: req.body.title,
             contentText: req.body.contentText,
@@ -71,25 +112,28 @@ router.post('/create', upload.single('imgFile'), (req, res, next) => {
         })
     }
     else{
-        image.saveImage(req, (err, result) => {
-            if(err){
-                return next(err);
-            }
-            models.free_boards.create({
-                title: req.body.title,
-                contentText: req.body.contentText,
-                contentImage: result.imageNum,
-                writer: req.body.id,
-                views: 0,
-                recommend: 0
-            })
-            .then(result => {
-                return res.json({"result": true});
-            })
-            .catch(err => {
-                return next(err);
-            })
-        })        
+        var len = req.files.length;
+        var i = 0;
+        var list = [];
+        for (; i < len; i++){
+            var temp = await image.promiseSaveImage(req, i);
+            list.push(temp.imageNum);
+        }
+        list = JSON.stringify(list);
+        models.free_boards.create({
+            title: req.body.title,
+            contentText: req.body.contentText,
+            contentImage: list,
+            writer: req.body.id,
+            views: 0,
+            recommend: 0
+        })
+        .then(result => {
+            return res.json({"result": true});
+        })
+        .catch(err => {
+            return next(err);
+        })      
     }
 });
 

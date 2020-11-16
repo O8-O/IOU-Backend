@@ -59,6 +59,23 @@ function saveMultiImage(req, callback){
     })
 }
 
+function promiseSaveImage(req, num){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.create({
+                user: req.body.id,
+                image: req.files[num].path
+            }) 
+            .then(result => {    
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(602));
+            })
+        }, 100);
+    });
+}
+
 // function deleteImage(link, callback){
 //     fs.unlink(link, (err) => {
 //         if(err){
@@ -106,5 +123,6 @@ function deleteImage(link){
 module.exports = {
     saveImage: saveImage,
     saveMultiImage: saveMultiImage,
+    promiseSaveImage: promiseSaveImage,
     deleteImage: deleteImage
 }

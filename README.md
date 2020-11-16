@@ -327,7 +327,7 @@ Clone or download and Use npm install
 >           title : {title},
 >           contentText : {contentText},
 >           id : {userID},
->           imgFile : {imageFile} (생략 가능)
+>           imgFile : {imageFile} (여러장 가능, 생략 가능)
 >       }
 >   - RESPONSE
 >       - SUCCESS

@@ -67,7 +67,6 @@ router.post('/create', upload.array('imgFile'), (req, res, next) => {
             if(err){
                 return next(err);
             }
-            console.log(result)
             models.vote_boards.create({
                 title: req.body.title,
                 contentText: req.body.contentText,
