@@ -219,10 +219,13 @@ function showUserPreference(id){
                 }
             })
             .then(result => { 
+                if (result == null){
+                    resolve(result);
+                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(errorWrapper(101));
+                reject(errorWrapper(0, err));
             })
         }, 100);
     });

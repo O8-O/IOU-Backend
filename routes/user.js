@@ -182,7 +182,10 @@ router.post('/save_preference', async (req, res, next) => {
 
 router.post('/show_user_preference', async (req, res, next) => {
     try{
-        var result = await user.showUserPreference(req.body.id);                
+        var result = await user.showUserPreference(req.body.id);     
+        if (result == null){
+            return res.json({"result" : false});
+        }         
         data = JSON.parse(result.image);  
         result.image = data;
         return res.json({"result" : result});
