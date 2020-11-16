@@ -201,7 +201,12 @@ Clone or download and Use npm install
 >           {
 >               result : {result}
 >           }
->       - POSSIBLE ERROR : 101
+>       - NOT EXIST
+>           - BODY(JSON)
+>           {
+>               result : false
+>           }
+>       - POSSIBLE ERROR :
 >   ```
 >> ### POST "/user/show_preference"
 >   ```
