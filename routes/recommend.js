@@ -3,7 +3,7 @@ const router = express.Router();
 const models = require('../models');
 const recommend = require('../util/recommend');
 
-router.post('/free', async (req, res, next) => {
+router.post('/make_free', async (req, res, next) => {
     try{         
         req.body.postType = 1;
         var find = await recommend.findFreeRecommend(req);    
@@ -34,7 +34,7 @@ router.post('/free', async (req, res, next) => {
     }       
 });
 
-router.post('/vote', async (req, res, next) => {
+router.post('/make_vote', async (req, res, next) => {
     try{      
         req.body.postType = 2;   
         var find = await recommend.findVoteRecommend(req);    
@@ -65,7 +65,7 @@ router.post('/vote', async (req, res, next) => {
     }       
 });
 
-router.post('/freeCancel', async (req, res, next) => {
+router.post('/cancel_free', async (req, res, next) => {
     try{         
         var find = await recommend.findFreeRecommend(req);    
         if(!find){
@@ -96,7 +96,7 @@ router.post('/freeCancel', async (req, res, next) => {
     } 
 });
 
-router.post('/voteCancel', async (req, res, next) => {
+router.post('/cancel_vote', async (req, res, next) => {
     try{         
         var find = await recommend.findVoteRecommend(req);    
         if(!find){
@@ -125,6 +125,34 @@ router.post('/voteCancel', async (req, res, next) => {
     } catch(err) {
         return next(err);
     } 
+});
+
+router.post('/exist_free', async (req, res, next) => {
+    try{         
+        var find = await recommend.findFreeRecommend(req);    
+        if(find){
+            return res.json({"result" : true});
+        }   
+        else{
+            return res.json({"result" : false});
+        } 
+    } catch(err) {
+        return next(err);
+    }       
+});
+
+router.post('/exist_vote', async (req, res, next) => {
+    try{         
+        var find = await recommend.findVoteRecommend(req);    
+        if(find){
+            return res.json({"result" : true});
+        }   
+        else{
+            return res.json({"result" : false});
+        } 
+    } catch(err) {
+        return next(err);
+    }       
 });
 
 module.exports = router;

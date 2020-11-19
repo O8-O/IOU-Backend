@@ -596,7 +596,7 @@ Clone or download and Use npm install
 >   ```
 >
 > ## recommend
->> ### POST "/recommend/free"
+>> ### POST "/recommend/make_free"
 >   ```
 >   - USAGE : Make free board recommend data in DB.
 >   - REQUEST
@@ -613,7 +613,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 501, 503, 505
 >   ```
->> ### POST "/recommend/vote"
+>> ### POST "/recommend/make_vote"
 >   ```
 >   - USAGE : Make vote board recommend data in DB.
 >   - REQUEST
@@ -630,7 +630,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 501, 503, 505
 >   ```
->> ### POST "/recommend/freeCancel"
+>> ### POST "/recommend/cancel_free"
 >   ```
 >   - USAGE : Delete free board recommend data in DB.
 >   - REQUEST
@@ -647,7 +647,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 501, 504, 506
 >   ```
->> ### POST "/recommend/voteCancel"
+>> ### POST "/recommend/cancel_vote"
 >   ```
 >   - USAGE : Delete vote board recommend data in DB.
 >   - REQUEST
