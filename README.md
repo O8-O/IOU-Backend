@@ -664,6 +664,50 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 501, 504, 506
 >   ```
+>> ### POST "/recommend/exist_free"
+>   ```
+>   - USAGE : Check whether user's recommend data exists in free board.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - EXIST
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - NOT EXIST
+>           - BODY(JSON)
+>           {
+>               result : false
+>           }
+>       - POSSIBLE ERROR : 501
+>   ```
+>> ### POST "/recommend/exist_vote"
+>   ```
+>   - USAGE : Check whether user's recommend data exists in vote board.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - EXIST
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - NOT EXIST
+>           - BODY(JSON)
+>           {
+>               result : false
+>           }
+>       - POSSIBLE ERROR : 501
+>   ```
 >
 > ## ERROR CASE
 >   ```
