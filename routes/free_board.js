@@ -26,7 +26,14 @@ router.post('/show_all', (req, res, next) => {
     freeBoard.showAll((err, postData) => {
         if(err){
             return next(err);
-        }        
+        }    
+        var len = postData.length;
+        var i;
+        var temp;
+        for(i = 0; i < len; i++){
+            temp = JSON.parse(postData[i].contentImage);
+            postData[i].contentImage = temp;
+        }   
         return res.json({"result": postData});
     })
 })
@@ -36,6 +43,13 @@ router.post('/show_all_user_board', (req, res, next) => {
         if(err){
             return next(err);
         }
+        var len = postData.length;
+        var i;
+        var temp;
+        for(i = 0; i < len; i++){
+            temp = JSON.parse(postData[i].contentImage);
+            postData[i].contentImage = temp;
+        }  
         return res.json({"result": postData});
     })
 });
