@@ -415,7 +415,8 @@ Clone or download and Use npm install
 >           - BODY(JSON)
 >           {
 >               board : {postData},
->               comment : {count, rows}
+>               count : {voteResult},
+>               comment : {commentCount, rows}
 >           }
 >       - POSSIBLE ERROR : 301, 306
 >   ```
