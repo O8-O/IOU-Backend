@@ -253,4 +253,18 @@ router.post('/reset_password', async (req, res, next) => {
     }
 });
 
+router.post('/dummy', (req, res, next) => {
+    models.images.findOne({
+        where: {
+            imageNum : req.body.imageNum
+        }
+    })
+    .then(result => {
+        return res.json({"result": result});
+    })
+    .catch(err => {
+        return next(err);
+    })
+});
+
 module.exports = router;
