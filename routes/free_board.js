@@ -218,8 +218,16 @@ router.post('/delete', async (req, res, next) => {
             var result = await freeBoard.deleteBoard(req);
         }
         else{
-            var image1 = await user.showOneImage(post.contentImage);
-            var imageResult = await image.deleteImage(image1.image);  
+            var imageList = JSON.parse(post.contentImage);
+            var len = imageList.length;
+            var i;
+            var imageResult;
+            var imageLink;
+            for(i = 0; i < len; i++){
+                imageLink = await image.findImage(imageList[i]);
+                imageResult = await image.deleteImage(imageLink.image);
+            }
+            
             var result = await freeBoard.deleteBoard(req);
         }
         return res.json({"result" : true});

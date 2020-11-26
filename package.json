@@ -19,6 +19,7 @@
   "homepage": "https://github.com/O8-O/IOU-Backend#readme",
   "dependencies": {
     "cookie-parser": "^1.4.5",
+    "cron": "^1.8.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "mime": "^2.4.6",

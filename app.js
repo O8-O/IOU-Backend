@@ -5,9 +5,13 @@ const models = require('./models/index');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error_handler');
-const schedule = require('node-schedule');
-const db = require('./models');
-const multer = require('multer');
+// const schedule = require('node-schedule');
+// const db = require('./models');
+// const multer = require('multer');
+
+const CronJob = require('cron').CronJob;
+const image = require('./util/image');
+const user = require('./util/user');
 // const MlWrapper = require('./util/IOU-ML/mlWrapper');
 
 var running = [];
@@ -83,6 +87,33 @@ app.use('/recommend', require('./routes/recommend'));
 //         })
 //     }    
 // });
+
+
+// ml = new MlWrapper();
+const task = async () => {
+    console.log("start");
+    if (running.length){
+        console.log("HI");
+        var imageNum = running.shift();
+        var parentImage = await image.findImage(imageNum);
+        var tempPref = await user.showUserPreference(parentImage.user);
+        var index = JSON.parse(tempPref.image);
+        var lightColor = JSON.parse(parentImage.lightColor);
+        var prefImage = []
+
+        for (var i = 0; i < index.length; i++){
+            var temp = await image.findImage(index[i]);
+            prefImage.push(temp.image);
+        }
+
+        console.log(parentImage.image, prefImage, lightColor);
+        // ml.requestServiceStart(parentImage.image, prefImage, lightColor);
+    }
+}
+const stopAlert = () => console.log('Cron stopped');
+
+const job = new CronJob("*/5 * * * * *", task, stopAlert, false, 'Asia/Seoul');
+setTimeout(() => job.start(), 3000);
 
 app.use([errorHandler.logHandler, errorHandler.httpSender]);
 

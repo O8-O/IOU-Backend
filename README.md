@@ -992,6 +992,14 @@ Clone or download and Use npm install
 >               errType : 602,
 >               msg : "Fail to delete image"
 >           }
+>   - case 603 : Fail to show image in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 603,
+>               msg : "Fail to show image"
+>           }
 >   ```
 >
 >

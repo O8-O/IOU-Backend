@@ -16,6 +16,9 @@ function errorWrapper(errorType, err){
         case 602:
             err.message = "Fail to delete image";
             break;
+        case 603:
+            err.message = "Fail to show image";
+            break;
     }
     err.type = errorType;
     return err;
@@ -120,9 +123,28 @@ function deleteImage(link){
     });
 }
 
+function findImage(num){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.findOne({
+                where: {
+                    imageNum: num
+                }
+            }) 
+            .then(result => {    
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(603));
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     saveImage: saveImage,
     saveMultiImage: saveMultiImage,
     promiseSaveImage: promiseSaveImage,
-    deleteImage: deleteImage
+    deleteImage: deleteImage,
+    findImage: findImage
 }
