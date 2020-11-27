@@ -113,7 +113,7 @@ const task = async () => {
 const stopAlert = () => console.log('Cron stopped');
 
 const job = new CronJob("*/5 * * * * *", task, stopAlert, false, 'Asia/Seoul');
-setTimeout(() => job.start(), 3000);
+// setTimeout(() => job.start(), 3000);
 
 app.use([errorHandler.logHandler, errorHandler.httpSender]);
 

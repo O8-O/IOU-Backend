@@ -107,7 +107,7 @@ function saveImage(req){
             .catch(err => {
                 reject(errorWrapper(104));
             })
-        }, 100);
+        }, 500);
     });
 }
 
