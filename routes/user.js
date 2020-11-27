@@ -267,4 +267,205 @@ router.post('/dummy', (req, res, next) => {
     })
 });
 
+router.post('/changed_image_dummy', async (req, res, next) => {
+    // var changedList = {0:{changeFile: null}, 1:{changeFile:null, changeJSON:null}};
+    var changedList = [{changedFile: null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
+
+    changedList[0].changedFile = 62;
+    changedList[1].changedFile = 63;
+    changedList[1].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[2].changedFile = 63;
+    changedList[2].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[3].changedFile = 63;
+    changedList[3].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[4].changedFile = 63;
+    changedList[4].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[5].changedFile = 63;
+    changedList[5].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[6].changedFile = 63;
+    changedList[6].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[7].changedFile = 63;
+    changedList[7].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[8].changedFile = 63;
+    changedList[8].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+
+    return res.json({"result" : changedList});
+});
+
 module.exports = router;
