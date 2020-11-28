@@ -464,7 +464,8 @@ router.post('/changed_image_dummy', async (req, res, next) => {
         ],
         recommendMore : [71, 72]
     };
-
+    // var list = JSON.stringify(changedList[1].changedJSON);
+    // console.log(list);
     return res.json({"result" : changedList});
 });
 
