@@ -141,10 +141,49 @@ function findImage(num){
     });
 }
 
+function findImageByLink(link){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.findOne({
+                where: {
+                    image: link
+                }
+            }) 
+            .then(result => {    
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(603));
+            })
+        }, 100);
+    });
+}
+
+function saveChangedImage(parentNum, userID, changedLink, changedJson){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.images.create({
+                user: userID,
+                image: changedLink,
+                parentImage: parentNum,
+                data: changedJson
+            }) 
+            .then(result => {    
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(603));
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     saveImage: saveImage,
     saveMultiImage: saveMultiImage,
     promiseSaveImage: promiseSaveImage,
     deleteImage: deleteImage,
-    findImage: findImage
+    findImage: findImage,
+    findImageByLink: findImageByLink,
+    saveChangedImage: saveChangedImage
 }

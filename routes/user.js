@@ -267,6 +267,10 @@ router.post('/dummy', (req, res, next) => {
     })
 });
 
+router.post('/change_image_show', async (req, res, next) => {
+
+});
+
 router.post('/changed_image_dummy', async (req, res, next) => {
     // var changedList = {0:{changeFile: null}, 1:{changeFile:null, changeJSON:null}};
     var changedList = [{changedFile: null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
