@@ -152,7 +152,7 @@ const downloadStart = async () => {
         var tempLink;
         var tempJson;
         var result;
-        for (var i = 1; i < 2; i++){
+        for (var i = 1; i < 9; i++){
             tempLink = changedList[i].changedFile;
             tempJson = JSON.stringify(changedList[i].changedJson);
             console.log(tempJson);
