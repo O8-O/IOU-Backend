@@ -12,7 +12,7 @@ const errorHandler = require('./middleware/error_handler');
 const CronJob = require('cron').CronJob;
 const image = require('./util/image');
 const user = require('./util/user');
-// const MlWrapper = require('./util/IOU-ML/mlWrapper');
+const MlWrapper = require('./util/IOU-ML/mlWrapper');
 
 var running = [];
 module.exports.running = running;
@@ -89,7 +89,7 @@ app.use('/recommend', require('./routes/recommend'));
 // });
 
 
-// ml = new MlWrapper();
+ml = new MlWrapper();
 const uploadStart = async () => {
     console.log('Upload start');
     if (running.length){
@@ -107,7 +107,7 @@ const uploadStart = async () => {
         }
 
         console.log(parentImage.image, prefImage, parentImage.lightColor);
-        // ml.requestServiceStart(parentImage.image, prefImage, parentImage.lightColor);
+        ml.requestServiceStart(parentImage.image, prefImage, parentImage.lightColor);
     }
 }
 const uploadStop = () => console.log('Upload stopped');
@@ -116,7 +116,7 @@ setTimeout(() => upload.start(), 3000);
 
 const downloadStart = async () => {
     console.log('Download start');
-    var changedList;
+    /*
     var changedList = [{changedFile: null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
 
     changedList[0].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T10-56-10.649Zinterior (1).jpg";
@@ -143,9 +143,9 @@ const downloadStart = async () => {
             }
         ],
         recommendMore : [71, 72]
-    };
+    };*/
 
-    // var changedList = ml.checkServiceEnd();
+    var changedList = ml.checkServiceEnd();
     if (changedList.length){
         console.log('Download data exist');
         var parentImage = await image.findImageByLink(changedList[0].changedFile);
@@ -163,7 +163,7 @@ const downloadStart = async () => {
 }
 const downloadStop = () => console.log('Download stopped');
 const download = new CronJob("*/5 * * * * *", downloadStart, downloadStop, false, 'Asia/Seoul');
-// setTimeout(() => download.start(), 3000);
+setTimeout(() => download.start(), 3000);
 
 app.use([errorHandler.logHandler, errorHandler.httpSender]);
 
