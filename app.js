@@ -98,21 +98,21 @@ const uploadStart = async () => {
         var parentImage = await image.findImage(imageNum);
         var tempPref = await user.showUserPreference(parentImage.user);
         var index = JSON.parse(tempPref.image);
-        var lightColor = JSON.parse(parentImage.lightColor);
-        var prefImage = []
+        //var lightColor = JSON.parse(parentImage.lightColor);
+        var prefImage = [];
 
         for (var i = 0; i < index.length; i++){
             var temp = await image.findImage(index[i]);
             prefImage.push(temp.image);
         }
 
-        console.log(parentImage.image, prefImage, lightColor);
-        // ml.requestServiceStart(parentImage.image, prefImage, lightColor);
+        console.log(parentImage.image, prefImage, parentImage.lightColor);
+        // ml.requestServiceStart(parentImage.image, prefImage, parentImage.lightColor);
     }
 }
 const uploadStop = () => console.log('Upload stopped');
 const upload = new CronJob("*/5 * * * * *", uploadStart, uploadStop, false, 'Asia/Seoul');
-// setTimeout(() => upload.start(), 3000);
+setTimeout(() => upload.start(), 3000);
 
 const downloadStart = async () => {
     console.log('Download start');
