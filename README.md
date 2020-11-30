@@ -1000,6 +1000,14 @@ Clone or download and Use npm install
 >               errType : 603,
 >               msg : "Fail to show image"
 >           }
+>   - case 604 : Fail to edit image in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 604,
+>               msg : "Fail to edit image"
+>           }
 >   ```
 >
 >
