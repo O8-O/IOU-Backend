@@ -116,50 +116,80 @@ setTimeout(() => upload.start(), 3000);
 
 const downloadStart = async () => {
     console.log('Download start');
-    /*
-    var changedList = [{changedFile: null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
+    
+    // var changedList = [{changedFile: null}, {changedFile:null, changedJson:null}, {changedFile:null, changedJson:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
 
-    changedList[0].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T10-56-10.649Zinterior (1).jpg";
-    changedList[1].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T10-56-15.503Zinterior (8).jpg";
-    changedList[1].changedJson = {
-        wallColor : [233, 242, 172],
-        wallPicture : 63,
-        floorColor : [233, 242, 172],
-        floorPicture : 64,
-        changedFurniture : [
-            {
-                start : [234, 457], color : [233, 242, 172]
-            },
-            {
-                start : [1023, 678], color : [233, 242, 172]
-            }
-        ],
-        recommendFurniture : [
-            {
-                start : [234, 457], pictureList : [65, 66, 67]
-            },
-            {
-                start : [1023, 678], pictureList : [68, 69, 70]
-            }
-        ],
-        recommendMore : [71, 72]
-    };*/
+    // changedList[0].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T10-56-10.649Zinterior (1).jpg";
+    // changedList[1].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-33.365Zharry[1].jpg";
+    // changedList[1].changedJson = {
+    //     wallColor : [233, 242, 172],
+    //     wallPicture : "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T15-30-21.780Zinterior7.jpg",
+    //     floorColor : [233, 242, 172],
+    //     floorPicture : "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T10-56-15.503Zinterior (8).jpg",
+    //     changedFurniture : [
+    //         {
+    //             location : [234, 457], color : [233, 242, 172]
+    //         },
+    //         {
+    //             location : [1023, 678], color : [233, 242, 172]
+    //         }
+    //     ],
+    //     recommendFurniture : [
+    //         {
+    //             location : [234, 457], link : ["C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-57.281ZT�4�).png", "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-41.328Zflukeout.PNG"]
+    //         },
+    //         {
+    //             location : [1023, 678], link : ["C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-57.281ZT�4�).png", "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-41.328Zflukeout.PNG"]
+    //         }
+    //     ]
+    // };
 
-    var changedList = ml.checkServiceEnd();
-    if (changedList.length){
-        console.log('Download data exist');
-        var parentImage = await image.findImageByLink(changedList[0].changedFile);
-        var tempLink;
-        var tempJson;
-        var result;
-        for (var i = 1; i < 9; i++){
-            tempLink = changedList[i].changedFile;
-            tempJson = JSON.stringify(changedList[i].changedJson);
-            console.log(tempJson);
-            result = await image.saveChangedImage(parentImage.imageNum, parentImage.user, tempLink, tempJson);
-            console.log(result);
-        }
-    }
+    ml.checkServiceEnd().then(async (changedList)=>{
+        if(changedList.length){
+            console.log('Download data exist');
+            var parentImage = await image.findImageByLink(changedList[0].changedFile);
+            var tempLink;
+            var tempJson;
+            var result;
+            var wallImage;
+            var floorImage;
+            
+            for (var i = 1; i < 2; i++){ // save changed image
+                var furniture;
+                // var cFurniture = [];
+                
+
+                wallImage = await image.findImageByLink(changedList[i].changedJson.wallPicture);
+                floorImage = await image.findImageByLink(changedList[i].changedJson.floorPicture);
+                
+                changedList[i].changedJson.wallPicture = wallImage.imageNum;
+                changedList[i].changedJson.floorPicture = floorImage.imageNum;
+
+                tempLink = changedList[i].changedFile;
+                tempJson = JSON.stringify(changedList[i].changedJson);
+                result = await image.saveChangedImage(parentImage.imageNum, parentImage.user, tempLink, tempJson);
+                // console.log(result);
+
+                // for (var j = 0; j < changedList[i].changedJson.changedFurniture.length; j++){ // save changedFurniture
+                //     furniture = await image.saveFurniture(result.imageNum, result.user, changedList[i].changedJson.changedFurniture[j]);
+                //     cFurniture.push(furniture.furnitureNum);
+                // }
+                // changedList[i].changedJson.changedFurniture = cFurniture;
+                
+                for (var j = 0; j < changedList[i].changedJson.recommendFurniture.length; j++){ // save changedFurniture
+                    var rFurniture = [];
+                    for (var k = 0; k < changedList[i].changedJson.recommendFurniture[j].link.length; k++){
+                        furniture = await image.saveFurniture(result.imageNum, result.user, changedList[i].changedJson.recommendFurniture[j].link[k]);
+                        rFurniture.push(furniture.furnitureNum);
+                    }
+                    changedList[i].changedJson.recommendFurniture[j].link = rFurniture;
+                }                
+
+                tempJson = JSON.stringify(changedList[i].changedJson);
+                result = await image.editImageData(result.imageNum, tempJson);
+            }
+        }        
+    });
 }
 const downloadStop = () => console.log('Download stopped');
 const download = new CronJob("*/5 * * * * *", downloadStart, downloadStop, false, 'Asia/Seoul');

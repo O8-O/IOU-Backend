@@ -19,6 +19,9 @@ function errorWrapper(errorType, err){
         case 603:
             err.message = "Fail to show image";
             break;
+        case 604:
+            err.message = "Fail to edit image";
+            break;
     }
     err.type = errorType;
     return err;
@@ -172,7 +175,47 @@ function saveChangedImage(parentNum, userID, changedLink, changedJson){
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(errorWrapper(603));
+                reject(errorWrapper(601));
+            })
+        }, 100);
+    });
+}
+
+function saveFurniture(parentNum, userID, furnitureLink){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.furnitures.create({
+                user: userID,
+                furniture: furnitureLink,
+                parentImage: parentNum
+            }) 
+            .then(result => {    
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(601));
+            })
+        }, 100);
+    });
+}
+
+function editImageData(imageNum, data){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {         
+            db.images.update(
+                {
+                    data: data
+                },
+                {
+                where: {
+                    imageNum: imageNum
+                }   
+            })
+            .then(result => {     
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(604));
             })
         }, 100);
     });
@@ -185,5 +228,7 @@ module.exports = {
     deleteImage: deleteImage,
     findImage: findImage,
     findImageByLink: findImageByLink,
-    saveChangedImage: saveChangedImage
+    saveChangedImage: saveChangedImage,
+    saveFurniture: saveFurniture,
+    editImageData: editImageData
 }
