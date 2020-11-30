@@ -221,6 +221,26 @@ function editImageData(imageNum, data){
     });
 }
 
+function showChangedImage(id, imageNum){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {         
+            db.images.findAll({
+                where: {
+                    user: id,
+                    parentImage: imageNum
+                },
+                attributes: ['imageNum', 'image', 'data'] 
+            })
+            .then(result => {   
+                resolve(result);
+            })
+            .catch(err => {
+                reject(errorWrapper(603));
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     saveImage: saveImage,
     saveMultiImage: saveMultiImage,
@@ -230,5 +250,6 @@ module.exports = {
     findImageByLink: findImageByLink,
     saveChangedImage: saveChangedImage,
     saveFurniture: saveFurniture,
-    editImageData: editImageData
+    editImageData: editImageData,
+    showChangedImage: showChangedImage
 }

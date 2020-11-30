@@ -94,7 +94,7 @@ Clone or download and Use npm install
 >       - SUCCESS
 >           - BODY(JSON)
 >           {
->               result : true
+>               result : {imageNum}
 >           }
 >       - POSSIBLE ERROR : 104
 >   ```
@@ -270,6 +270,37 @@ Clone or download and Use npm install
 >               result : true
 >           }
 >       - POSSIBLE ERROR : 107, 110
+>   ```
+>> ### POST "/user/show_changed_image"
+>   ```
+>   - USAGE : Show changed images in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           imageNum : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - NOT EXIST
+>           - BODY(JSON)
+>           {
+>               result : false
+>           }
+>       - POSSIBLE ERROR : 603
+>   ```
+>> ### GET "/user/downloadFurniture/:image"
+>   ```
+>   - USAGE : Download Furniture image data in DB with GET method.
+>   - REQUEST : It needs FurnitureImageNum in URL.    
+>   - RESPONSE
+>       - SUCCESS
+>           - Show IMAGE
+>       - POSSIBLE ERROR : 105
 >   ```
 >
 > ## free_board
