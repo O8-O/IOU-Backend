@@ -154,7 +154,7 @@ const downloadStart = async () => {
             var wallImage;
             var floorImage;
             
-            for (var i = 1; i < 2; i++){ // save changed image
+            for (var i = 1; i < 9; i++){ // save changed image
                 var furniture;
                 // var cFurniture = [];
                 
@@ -186,6 +186,7 @@ const downloadStart = async () => {
                 }                
 
                 tempJson = JSON.stringify(changedList[i].changedJson);
+                console.log(tempJson);
                 result = await image.editImageData(result.imageNum, tempJson);
             }
         }        
