@@ -148,24 +148,24 @@ function showOneImage(imageNum){
     });
 }
 
-function showChangedImage(imageNum){
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            db.changed_images.findAll({
-                where: {
-                    parentImage: imageNum
-                },
-                attributes: ['imageNum', 'image']
-            })
-            .then(result => {       
-                resolve(result);
-            })
-            .catch(err => {
-                reject(errorWrapper(105));
-            })
-        }, 100);
-    });
-}
+// function showChangedImage(imageNum){
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             db.changed_images.findAll({
+//                 where: {
+//                     parentImage: imageNum
+//                 },
+//                 attributes: ['imageNum', 'image']
+//             })
+//             .then(result => {       
+//                 resolve(result);
+//             })
+//             .catch(err => {
+//                 reject(errorWrapper(105));
+//             })
+//         }, 100);
+//     });
+// }
 
 function deleteImage(link){
     return new Promise((resolve, reject) => {
@@ -342,6 +342,24 @@ function setPassword(id, password){
     });
 }
 
+function showFurnitureImage(furnitureNum){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.furnitures.findOne({
+                where: {
+                    furnitureNum: furnitureNum
+                }
+            })
+            .then(result => {     
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     encryptPW: encryptPW,
     findUserByID: findUserByID,
@@ -350,7 +368,7 @@ module.exports = {
     saveImage: saveImage,
     showAllImage: showAllImage,
     showOneImage: showOneImage,
-    showChangedImage: showChangedImage,
+    // showChangedImage: showChangedImage,
     deleteImage: deleteImage,
     savePreference: savePreference,
     showUserPreference: showUserPreference,
@@ -358,5 +376,6 @@ module.exports = {
     editPreference: editPreference,
     // addPreference: addPreference,
     findUserByEmail: findUserByEmail,
-    setPassword: setPassword
+    setPassword: setPassword,
+    showFurnitureImage: showFurnitureImage
 }

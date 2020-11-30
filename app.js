@@ -5,9 +5,6 @@ const models = require('./models/index');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error_handler');
-// const schedule = require('node-schedule');
-// const db = require('./models');
-// const multer = require('multer');
 
 const CronJob = require('cron').CronJob;
 const image = require('./util/image');
@@ -44,51 +41,6 @@ app.use('/hot_board', require('./routes/hot_board'));
 app.use('/comment', require('./routes/comment'));
 app.use('/recommend', require('./routes/recommend'));
 
-// ml = new MlWrapper();
-// schedule.scheduleJob("*/5 * * * * *", () => {
-//     console.log("HI");
-//     if(running.length){
-//         var imageNum = running.shift();
-//         db.images.findOne({
-//             where: {
-//                 imageNum: imageNum
-//             }
-//         })
-//         .then(result => {       
-//             ml.getStyleChangedImage(result.dataValues.image, [""]).then(
-//                 (data) => {
-//                     var len = data.length;
-//                     var loop = data[len - 1];
-//                     setTimeout(() => {
-//                         for(var i = len - 2; i > len - loop - 2; i--){
-//                             console.log("WHY");
-//                             db.changed_images.create({
-//                                 user: result.dataValues.user,
-//                                 parentImage: result.dataValues.imageNum,
-//                                 image: data[i]
-//                             })
-//                             .then(result => {       
-//                                 console.log(result.dataValues);
-//                             })
-//                             .catch(err => {
-//                                 console.log(err);
-//                             })
-//                         }
-//                         console.log("success");     
-//                     }, 1000);
-//                 },
-//                 (err) => {
-//                     console.log(err);
-//                 }
-//             )               
-//         })
-//         .catch(err => {
-//             console.log(err);
-//         })
-//     }    
-// });
-
-
 ml = new MlWrapper();
 const uploadStart = async () => {
     console.log('Upload start');
@@ -98,7 +50,6 @@ const uploadStart = async () => {
         var parentImage = await image.findImage(imageNum);
         var tempPref = await user.showUserPreference(parentImage.user);
         var index = JSON.parse(tempPref.image);
-        //var lightColor = JSON.parse(parentImage.lightColor);
         var prefImage = [];
 
         for (var i = 0; i < index.length; i++){
@@ -117,32 +68,32 @@ setTimeout(() => upload.start(), 3000);
 const downloadStart = async () => {
     console.log('Download start');
     
-    // var changedList = [{changedFile: null}, {changedFile:null, changedJson:null}, {changedFile:null, changedJson:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
+    var changedList = [{changedFile: null}, {changedFile:null, changedJson:null}, {changedFile:null, changedJson:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
 
-    // changedList[0].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T10-56-10.649Zinterior (1).jpg";
-    // changedList[1].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-33.365Zharry[1].jpg";
-    // changedList[1].changedJson = {
-    //     wallColor : [233, 242, 172],
-    //     wallPicture : "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T15-30-21.780Zinterior7.jpg",
-    //     floorColor : [233, 242, 172],
-    //     floorPicture : "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T10-56-15.503Zinterior (8).jpg",
-    //     changedFurniture : [
-    //         {
-    //             location : [234, 457], color : [233, 242, 172]
-    //         },
-    //         {
-    //             location : [1023, 678], color : [233, 242, 172]
-    //         }
-    //     ],
-    //     recommendFurniture : [
-    //         {
-    //             location : [234, 457], link : ["C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-57.281ZT�4�).png", "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-41.328Zflukeout.PNG"]
-    //         },
-    //         {
-    //             location : [1023, 678], link : ["C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-57.281ZT�4�).png", "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-41.328Zflukeout.PNG"]
-    //         }
-    //     ]
-    // };
+    changedList[0].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T07-09-51.668Zinterior (543).jpg";
+    changedList[1].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-33.365Zharry[1].jpg";
+    changedList[1].changedJson = {
+        wallColor : [233, 242, 172],
+        wallPicture : "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T15-30-21.780Zinterior7.jpg",
+        floorColor : [233, 242, 172],
+        floorPicture : "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-29T10-56-15.503Zinterior (8).jpg",
+        changedFurniture : [
+            {
+                location : [234, 457], color : [233, 242, 172]
+            },
+            {
+                location : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                location : [234, 457], link : ["C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-57.281ZT�4�).png", "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-41.328Zflukeout.PNG"]
+            },
+            {
+                location : [1023, 678], link : ["C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-57.281ZT�4�).png", "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T05-28-41.328Zflukeout.PNG"]
+            }
+        ]
+    };
 
     ml.checkServiceEnd().then(async (changedList)=>{
         if(changedList.length){

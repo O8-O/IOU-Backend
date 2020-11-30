@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 const user = require('../util/user');
+const image = require('../util/image');
 const multer = require('multer');
 var fs = require('fs');
 var { running } = require('../app');
@@ -80,7 +81,7 @@ router.post('/upload_image', upload.single('imgFile'), async (req, res, next) =>
     try{
         var save = await user.saveImage(req);
         running.push(save.imageNum);
-        return res.json({"result" : true});
+        return res.json({"result" : save.imageNum});
     } catch(err) {
         return next(err);
     }
@@ -104,17 +105,17 @@ router.post('/show_one_image', async (req, res, next) => {
     }
 });
 
-router.post('/show_changed_image', async (req, res, next) => {
-    try{
-        var parent = await user.showOneImage(req.body.imageNum);
-        var parentImage = parent.image;
-        var parentImageNum = parent.imageNum;
-        var result = await user.showChangedImage(req.body.imageNum);
-        return res.json({"parent" : parentImageNum, "parent_image" : parentImage, result});
-    } catch(err){
-        return next(err);
-    }
-});
+// router.post('/show_changed_image', async (req, res, next) => {
+//     try{
+//         var parent = await user.showOneImage(req.body.imageNum);
+//         var parentImage = parent.image;
+//         var parentImageNum = parent.imageNum;
+//         var result = await user.showChangedImage(req.body.imageNum);
+//         return res.json({"parent" : parentImageNum, "parent_image" : parentImage, result});
+//     } catch(err){
+//         return next(err);
+//     }
+// });
 
 router.post('/delete_image', async (req, res, next) => {
     try{
@@ -267,8 +268,41 @@ router.post('/dummy', (req, res, next) => {
     })
 });
 
-router.post('/change_image_show', async (req, res, next) => {
+router.post('/show_changed_image', async (req, res, next) => {
+    try{
+        var result = await image.showChangedImage(req.body.id, req.body.imageNum);   
+        var len = result.length;
+        
+        if (len == 0){
+            return res.json({"result" : false});
+        }         
+        for (var i = 0; i < result.length; i++){
+            var data = JSON.parse(result[i].data);  
+            result[i].data = data;
+        }
+        return res.json({"result" : result});
+    } catch(err){
+        return next(err);
+    }
+});
 
+router.get('/downloadFurniture/:image', async (req, res, next) => {
+    try{
+        var imageData = await user.showFurnitureImage(req.params.image);
+        
+        fs.readFile(imageData.furniture, (err, data) => {
+            process.on('uncaughtException', (err) => {
+                console.error(err);
+                return res.json();
+            })
+            res.writeHead(200, {"Content-Type": "image/jpeg"});
+            res.write(data);
+            
+            res.end();          
+        });
+    } catch(err){
+        return next(err);
+    } 
 });
 
 router.post('/changed_image_dummy', async (req, res, next) => {
