@@ -148,6 +148,26 @@ function showOneImage(imageNum){
     });
 }
 
+function showParentImage(id){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {         
+            db.images.findAll({
+                where: {
+                    user: id,
+                    parentImage: null
+                },
+                attributes: ['imageNum', 'image', 'lightColor'] 
+            })
+            .then(result => {       
+                resolve(result);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
+            })
+        }, 100);
+    });
+}
+
 // function showChangedImage(imageNum){
 //     return new Promise((resolve, reject) => {
 //         setTimeout(() => {
@@ -368,6 +388,7 @@ module.exports = {
     saveImage: saveImage,
     showAllImage: showAllImage,
     showOneImage: showOneImage,
+    showParentImage: showParentImage,
     // showChangedImage: showChangedImage,
     deleteImage: deleteImage,
     savePreference: savePreference,

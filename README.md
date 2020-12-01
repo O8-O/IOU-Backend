@@ -130,6 +130,22 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 105
 >   ```
+>> ### POST "/user/show_my_image"
+>   ```
+>   - USAGE : Show user's uploaded images which are changed completely.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 105
+>   ```
 >> ### POST "/user/delete_image"
 >   ```
 >   - USAGE : Delete image data in DB.
