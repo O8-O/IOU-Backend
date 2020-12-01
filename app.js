@@ -67,7 +67,7 @@ setTimeout(() => upload.start(), 3000);
 
 const downloadStart = async () => {
     console.log('Download start');
-    
+    /*
     var changedList = [{changedFile: null}, {changedFile:null, changedJson:null}, {changedFile:null, changedJson:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
 
     changedList[0].changedFile = "C:\\Users\\KDW\\Desktop\\KOO\\대학\\3학년2학기\\캡스톤디자인\\capstone\\IOU-Backend\\upload\\2020-11-30T07-09-51.668Zinterior (543).jpg";
@@ -94,7 +94,7 @@ const downloadStart = async () => {
             }
         ]
     };
-
+    */
     ml.checkServiceEnd().then(async (changedList)=>{
         if(changedList.length){
             console.log('Download data exist');

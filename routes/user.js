@@ -105,6 +105,15 @@ router.post('/show_one_image', async (req, res, next) => {
     }
 });
 
+router.post('/show_my_image', async (req, res, next) => {
+    try{
+        var result = await user.showParentImage(req.body.id);
+        return res.json({"result" : result});
+    } catch(err){
+        return next(err);
+    }
+});
+
 // router.post('/show_changed_image', async (req, res, next) => {
 //     try{
 //         var parent = await user.showOneImage(req.body.imageNum);
@@ -272,7 +281,7 @@ router.post('/show_changed_image', async (req, res, next) => {
     try{
         var result = await image.showChangedImage(req.body.id, req.body.imageNum);   
         var len = result.length;
-        
+
         if (len == 0){
             return res.json({"result" : false});
         }         
@@ -289,7 +298,7 @@ router.post('/show_changed_image', async (req, res, next) => {
 router.get('/downloadFurniture/:image', async (req, res, next) => {
     try{
         var imageData = await user.showFurnitureImage(req.params.image);
-        
+        console.log(imageData);
         fs.readFile(imageData.furniture, (err, data) => {
             process.on('uncaughtException', (err) => {
                 console.error(err);
