@@ -9,7 +9,7 @@ const errorHandler = require('./middleware/error_handler');
 const CronJob = require('cron').CronJob;
 const image = require('./util/image');
 const user = require('./util/user');
-const MlWrapper = require('./util/IOU-ML/mlWrapper');
+// const MlWrapper = require('./util/IOU-ML/mlWrapper');
 
 var running = [];
 module.exports.running = running;
@@ -41,7 +41,7 @@ app.use('/hot_board', require('./routes/hot_board'));
 app.use('/comment', require('./routes/comment'));
 app.use('/recommend', require('./routes/recommend'));
 
-ml = new MlWrapper();
+// ml = new MlWrapper();
 const uploadStart = async () => {
     console.log('Upload start');
     if (running.length){
@@ -63,7 +63,7 @@ const uploadStart = async () => {
 }
 const uploadStop = () => console.log('Upload stopped');
 const upload = new CronJob("*/5 * * * * *", uploadStart, uploadStop, false, 'Asia/Seoul');
-setTimeout(() => upload.start(), 3000);
+// setTimeout(() => upload.start(), 3000);
 
 const downloadStart = async () => {
     console.log('Download start');
@@ -145,7 +145,7 @@ const downloadStart = async () => {
 }
 const downloadStop = () => console.log('Download stopped');
 const download = new CronJob("*/5 * * * * *", downloadStart, downloadStop, false, 'Asia/Seoul');
-setTimeout(() => download.start(), 3000);
+// setTimeout(() => download.start(), 3000);
 
 app.use([errorHandler.logHandler, errorHandler.httpSender]);
 
