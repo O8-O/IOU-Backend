@@ -1,5 +1,33 @@
 const db = require('../models');
 
+function errorWrapper(errorType, err){
+    if(err){
+        err.type = 0;
+        err.message = "Unexpected error";
+        return err;
+    }
+    err = new Error();
+
+    switch(errorType){
+        case 501:
+            err.message = "Fail to find recommend";
+            break;
+        case 502:
+            err.message = "Fail to order recommend";
+            break;
+        case 503:
+            err.message = "Fail to make recommend";
+            break;
+        case 504:
+            err.message = "Fail to delete recommend";
+            break;
+        // case 505 is set in routes/recommend.js
+        // case 506 is set in routes/recommend.js
+    }
+    err.type = errorType;
+    return err;
+}
+
 function countRecommend(req){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -13,7 +41,7 @@ function countRecommend(req){
                 resolve(result.count);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(0, err));
             })
         }, 100);
     });
@@ -33,7 +61,7 @@ function findFreeRecommend(req){
                 resolve(result);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(501));
             })
         }, 100);
     });
@@ -53,7 +81,7 @@ function findVoteRecommend(req){
                 resolve(result);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(501));
             })
         }, 100);
     });
@@ -73,7 +101,7 @@ function orderFreeRecommend(req){
                 resolve(result);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(502));
             })
         }, 100);
     });
@@ -93,7 +121,7 @@ function orderVoteRecommend(req){
                 resolve(result);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(502));
             })
         }, 100);
     });
@@ -108,13 +136,10 @@ function makeFreeRecommend(req){
                 user: req.body.id
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(503));
             })
         }, 100);
     });
@@ -129,13 +154,10 @@ function makeVoteRecommend(req){
                 user: req.body.id
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(503));
             })
         }, 100);
     });
@@ -152,13 +174,10 @@ function deleteRecommend(req){
                 }                
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(504));
             })
         }, 100);
     });
@@ -174,13 +193,10 @@ function deleteFreeRecommend(req){
                 }                
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(504));
             })
         }, 100);
     });
@@ -196,13 +212,10 @@ function deleteVoteRecommend(req){
                 }                
             })
             .then(result => {
-                if(!result){
-                    reject(new Error());
-                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(err);
+                reject(errorWrapper(504));
             })
         }, 100);
     });

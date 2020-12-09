@@ -29,7 +29,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 101
 >   ```
->> ### GET "/user/log_in_status"
+>> ### POST "/user/log_in_status"
 >   ```
 >   - USAGE : Check log_in status of user.
 >   - REQUEST : Nothing.
@@ -63,7 +63,7 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 101, 102
 >   ```
->> ### GET "/user/log_out"
+>> ### POST "/user/log_out"
 >   ```
 >   - USAGE : Request log_out of user.
 >   - REQUEST : Nothing.
@@ -87,17 +87,18 @@ Clone or download and Use npm install
 >       - BODY(JSON)
 >       {
 >           id : {userID},
->           imgFile : {imageFile}
+>           imgFile : {imageFile},
+>           lightColor : {lightColor}
 >       }
 >   - RESPONSE
 >       - SUCCESS
 >           - BODY(JSON)
 >           {
->               result : true
+>               result : {imageNum}
 >           }
 >       - POSSIBLE ERROR : 104
 >   ```
->> ### GET "/user/show_all_image"
+>> ### POST "/user/show_all_image"
 >   ```
 >   - USAGE : Show user's uploaded image.
 >   - REQUEST
@@ -113,13 +114,29 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 105
 >   ```
->> ### GET "/user/show_one_image"
+>> ### POST "/user/show_one_image"
 >   ```
 >   - USAGE : Show user's specific uploaded image.
 >   - REQUEST
 >       - BODY(JSON)
 >       {
 >           imageNum : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - POSSIBLE ERROR : 105
+>   ```
+>> ### POST "/user/show_my_image"
+>   ```
+>   - USAGE : Show user's uploaded images which are changed completely.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID}
 >       }
 >   - RESPONSE
 >       - SUCCESS
@@ -200,7 +217,12 @@ Clone or download and Use npm install
 >           {
 >               result : {result}
 >           }
->       - POSSIBLE ERROR : 101
+>       - NOT EXIST
+>           - BODY(JSON)
+>           {
+>               result : false
+>           }
+>       - POSSIBLE ERROR :
 >   ```
 >> ### POST "/user/show_preference"
 >   ```
@@ -214,14 +236,14 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 105
 >   ```
->> ### POST "/user/add_preference"
+>> ### POST "/user/edit_preference"
 >   ```
->   - USAGE : Add preference selection data of user's in DB.
+>   - USAGE : Edit preference selection data of user's in DB.
 >   - REQUEST
 >       - BODY(JSON)
 >       {
 >           id : {userID},
->           image : {imageNum}
+>           list : {array of imageNum}
 >       }
 >   - RESPONSE
 >       - SUCCESS
@@ -229,7 +251,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 109
+>       - POSSIBLE ERROR : 111
 >   ```
 >> ### POST "/user/find_id"
 >   ```
@@ -265,9 +287,40 @@ Clone or download and Use npm install
 >           }
 >       - POSSIBLE ERROR : 107, 110
 >   ```
+>> ### POST "/user/show_changed_image"
+>   ```
+>   - USAGE : Show changed images in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           id : {userID},
+>           imageNum : {imageNum}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : {result}
+>           }
+>       - NOT EXIST
+>           - BODY(JSON)
+>           {
+>               result : false
+>           }
+>       - POSSIBLE ERROR : 603
+>   ```
+>> ### GET "/user/downloadFurniture/:image"
+>   ```
+>   - USAGE : Download Furniture image data in DB with GET method.
+>   - REQUEST : It needs FurnitureImageNum in URL.    
+>   - RESPONSE
+>       - SUCCESS
+>           - Show IMAGE
+>       - POSSIBLE ERROR : 105
+>   ```
 >
 > ## free_board
->> ### GET "/free_board/show"
+>> ### POST "/free_board/show_all"
 >   ```
 >   - USAGE : Get all free board data.
 >   - REQUEST : Nothing.
@@ -277,9 +330,9 @@ Clone or download and Use npm install
 >           {
 >               result : {postData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 201
 >   ```
->> ### GET "/free_board/showAllUser"
+>> ### POST "/free_board/show_all_user_board"
 >   ```
 >   - USAGE : Get current user's entire free board data.
 >   - REQUEST
@@ -293,9 +346,9 @@ Clone or download and Use npm install
 >           {
 >               result : {postData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 201
 >   ```
->> ### GET "/free_board/showOne"
+>> ### POST "/free_board/show_one"
 >   ```
 >   - USAGE : Get one specific free board data.
 >   - REQUEST
@@ -308,9 +361,9 @@ Clone or download and Use npm install
 >           - BODY(JSON)
 >           {
 >               board : {postData},
->               comment : {commentData}
+>               comment : {count, rows}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 201
 >   ```
 >> ### POST "/free_board/create"
 >   ```
@@ -321,7 +374,7 @@ Clone or download and Use npm install
 >           title : {title},
 >           contentText : {contentText},
 >           id : {userID},
->           imgFile : {imageFile} (생략 가능)
+>           imgFile : {imageFile} (여러장 가능, 생략 가능)
 >       }
 >   - RESPONSE
 >       - SUCCESS
@@ -329,7 +382,25 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 601
+>   ```
+>> ### POST "/free_board/edit_text"
+>   ```
+>   - USAGE : Edit free board contentText in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           contentText : {contentText},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 107, 203
 >   ```
 >> ### POST "/free_board/delete"
 >   ```
@@ -346,11 +417,11 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 105, 107, 202, 402, 504, 602
 >   ```
 >
 > ## vote_board
->> ### GET "/vote_board/show"
+>> ### POST "/vote_board/show_all"
 >   ```
 >   - USAGE : Get all vote board data.
 >   - REQUEST : Nothing.
@@ -360,9 +431,9 @@ Clone or download and Use npm install
 >           {
 >               result : {postData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 301
 >   ```
->> ### GET "/vote_board/showAllUser"
+>> ### POST "/vote_board/show_all_user_board"
 >   ```
 >   - USAGE : Get current user's entire vote board data.
 >   - REQUEST
@@ -376,9 +447,9 @@ Clone or download and Use npm install
 >           {
 >               result : {postData}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 301
 >   ```
->> ### GET "/vote_board/showOne"
+>> ### POST "/vote_board/show_one"
 >   ```
 >   - USAGE : Get one specific vote board data.
 >   - REQUEST
@@ -391,9 +462,10 @@ Clone or download and Use npm install
 >           - BODY(JSON)
 >           {
 >               board : {postData},
->               comment : {commentData}
+>               count : {voteResult},
+>               comment : {commentCount, rows}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 301, 306
 >   ```
 >> ### POST "/vote_board/create"
 >   ```
@@ -413,7 +485,25 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 307, 601
+>   ```
+>> ### POST "/vote_board/edit_text"
+>   ```
+>   - USAGE : Edit vote board contentText in DB.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           contentText : {contentText},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - SUCCESS
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - POSSIBLE ERROR : 107, 310
 >   ```
 >> ### POST "/vote_board/delete"
 >   ```
@@ -430,7 +520,7 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 105, 107, 301, 302, 402, 504, 602
 >   ```
 >> ### POST "/vote_board/vote"
 >   ```
@@ -448,9 +538,9 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 303, 308
 >   ```
->> ### GET "/vote_board/showVote"
+>> ### POST "/vote_board/show_vote"
 >   ```
 >   - USAGE : Show vote data in DB.
 >   - REQUEST
@@ -464,9 +554,9 @@ Clone or download and Use npm install
 >           {
 >               result : {result}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 304
 >   ```
->> ### POST "/vote_board/cancelVote"
+>> ### POST "/vote_board/cancel_vote"
 >   ```
 >   - USAGE : Delete vote data in DB.
 >   - REQUEST
@@ -481,11 +571,11 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 305, 309
 >   ```
 >
 > ## hot_board
->> ### GET "/hot_board/show"
+>> ### POST "/hot_board/show"
 >   ```
 >   - USAGE : Show all free_board in recommend DESC Order. (if same recommend count, date desc order)
 >   - REQUEST : Nothing.
@@ -495,11 +585,11 @@ Clone or download and Use npm install
 >           {
 >               result : {result}
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 502
 >   ```
 >
 > ## comment
->> ### GET "/comment/show"
+>> ### POST "/comment/show"
 >   ```
 >   - USAGE : Show all comments data.
 >   - REQUEST
@@ -550,11 +640,11 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 107, 401
 >   ```
 >
 > ## recommend
->> ### POST "/recommend/free"
+>> ### POST "/recommend/make_free"
 >   ```
 >   - USAGE : Make free board recommend data in DB.
 >   - REQUEST
@@ -569,9 +659,9 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 501, 503, 505
 >   ```
->> ### POST "/recommend/vote"
+>> ### POST "/recommend/make_vote"
 >   ```
 >   - USAGE : Make vote board recommend data in DB.
 >   - REQUEST
@@ -586,9 +676,9 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 501, 503, 505
 >   ```
->> ### POST "/recommend/freeCancel"
+>> ### POST "/recommend/cancel_free"
 >   ```
 >   - USAGE : Delete free board recommend data in DB.
 >   - REQUEST
@@ -603,9 +693,9 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 501, 504, 506
 >   ```
->> ### POST "/recommend/voteCancel"
+>> ### POST "/recommend/cancel_vote"
 >   ```
 >   - USAGE : Delete vote board recommend data in DB.
 >   - REQUEST
@@ -620,7 +710,51 @@ Clone or download and Use npm install
 >           {
 >               result : true
 >           }
->       - POSSIBLE ERROR : 
+>       - POSSIBLE ERROR : 501, 504, 506
+>   ```
+>> ### POST "/recommend/exist_free"
+>   ```
+>   - USAGE : Check whether user's recommend data exists in free board.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - EXIST
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - NOT EXIST
+>           - BODY(JSON)
+>           {
+>               result : false
+>           }
+>       - POSSIBLE ERROR : 501
+>   ```
+>> ### POST "/recommend/exist_vote"
+>   ```
+>   - USAGE : Check whether user's recommend data exists in vote board.
+>   - REQUEST
+>       - BODY(JSON)
+>       {
+>           postNum : {postNum},
+>           id : {userID}
+>       }
+>   - RESPONSE
+>       - EXIST
+>           - BODY(JSON)
+>           {
+>               result : true
+>           }
+>       - NOT EXIST
+>           - BODY(JSON)
+>           {
+>               result : false
+>           }
+>       - POSSIBLE ERROR : 501
 >   ```
 >
 > ## ERROR CASE
@@ -712,6 +846,214 @@ Clone or download and Use npm install
 >               result : false,
 >               errType : 110,
 >               msg : "Fail to update password"
+>           }
+>   - case 111 : Fail to update user's preference.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 111,
+>               msg : "Fail to update preference"
+>           }
+>   - case 201 : No Free Board Post exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 201,
+>               msg : "No Free Board Post exists"
+>           }
+>   - case 202 : Fail to delete Free Board Post.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 202,
+>               msg : "Fail to delete Free Board Post"
+>           }
+>   - case 203 : Fail to update contentText in Free Board Post.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 203,
+>               msg : "Fail to update contentText in DB"
+>           }
+>   - case 301 : No Vote Board Post exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 301,
+>               msg : "No Vote Board Post exists"
+>           }
+>   - case 302 : Fail to delete Vote Board Post.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 302,
+>               msg : "Fail to delete Vote Board Post"
+>           }
+>   - case 303 : Fail to make vote data in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 303,
+>               msg : "Fail to make vote data in DB"
+>           }
+>   - case 304 : Fail to show vote data in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 304,
+>               msg : "Fail to show vote data in DB"
+>           }
+>   - case 305 : Fail to delete vote data in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 305,
+>               msg : "Fail to delete vote data in DB"
+>           }
+>   - case 306 : Fail to count vote data in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 306,
+>               msg : "Fail to count vote data in DB"
+>           }
+>   - case 307 : No image received.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 307,
+>               msg : "No image received"
+>           }
+>   - case 308 : Vote data already exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 308,
+>               msg : "Already voted"
+>           }
+>   - case 309 : Post Num doesn't match.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 309,
+>               msg : "Post Num doesn't match"
+>           }
+>   - case 310 : Fail to update contentText in Vote Board Post.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 310,
+>               msg : "Fail to update contentText in DB"
+>           }
+>   - case 401 : Fail to show comment.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 401,
+>               msg : "Fail to show comment"
+>           }
+>   - case 402 : Fail to delete comment.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 402,
+>               msg : "Fail to delete comment"
+>           }
+>   - case 501 : Fail to find recommend.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 501,
+>               msg : "Fail to find recommend"
+>           }
+>   - case 502 : Fail to order recommend.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 502,
+>               msg : "Fail to order recommend"
+>           }
+>   - case 503 : Fail to make recommend.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 503,
+>               msg : "Fail to make recommend"
+>           }
+>   - case 504 : Fail to delete recommend.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 504,
+>               msg : "Fail to delete recommend"
+>           }
+>   - case 505 : Recommend Data already exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 505,
+>               msg : "Already recommended"
+>           }
+>   - case 506 : No recommend Data exists in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 506,
+>               msg : "No recommend Data exists"
+>           }
+>   - case 601 : Fail to save image in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 601,
+>               msg : "Fail to save image"
+>           }
+>   - case 602 : Fail to delete image in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 602,
+>               msg : "Fail to delete image"
+>           }
+>   - case 603 : Fail to show image in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 603,
+>               msg : "Fail to show image"
+>           }
+>   - case 604 : Fail to edit image in DB.
+>       - RESPONSE
+>           - BODY(JSON)
+>           {
+>               result : false,
+>               errType : 604,
+>               msg : "Fail to edit image"
 >           }
 >   ```
 >

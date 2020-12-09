@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-    const images = sequelize.define('images', {
-        imageNum: {
+    const furnitures = sequelize.define('furnitures', {
+        furnitureNum: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             allowNull: false,
@@ -11,19 +11,13 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(20),
             allowNull: false
         },
-        image: {
+        furniture: {
             type: DataTypes.TEXT,
             allowNull: false
         },
         parentImage: {
             type: DataTypes.INTEGER
-        },
-        data: {
-            type: DataTypes.TEXT
-        },
-        lightColor: {
-            type: DataTypes.STRING
         }
     });
-    return images;
+    return furnitures;
 };
