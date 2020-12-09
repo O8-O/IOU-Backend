@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 const user = require('../util/user');
+const image = require('../util/image');
 const multer = require('multer');
 var fs = require('fs');
 var { running } = require('../app');
@@ -80,7 +81,7 @@ router.post('/upload_image', upload.single('imgFile'), async (req, res, next) =>
     try{
         var save = await user.saveImage(req);
         running.push(save.imageNum);
-        return res.json({"result" : true});
+        return res.json({"result" : save.imageNum});
     } catch(err) {
         return next(err);
     }
@@ -104,17 +105,26 @@ router.post('/show_one_image', async (req, res, next) => {
     }
 });
 
-router.post('/show_changed_image', async (req, res, next) => {
+router.post('/show_my_image', async (req, res, next) => {
     try{
-        var parent = await user.showOneImage(req.body.imageNum);
-        var parentImage = parent.image;
-        var parentImageNum = parent.imageNum;
-        var result = await user.showChangedImage(req.body.imageNum);
-        return res.json({"parent" : parentImageNum, "parent_image" : parentImage, result});
+        var result = await user.showParentImage(req.body.id);
+        return res.json({"result" : result});
     } catch(err){
         return next(err);
     }
 });
+
+// router.post('/show_changed_image', async (req, res, next) => {
+//     try{
+//         var parent = await user.showOneImage(req.body.imageNum);
+//         var parentImage = parent.image;
+//         var parentImageNum = parent.imageNum;
+//         var result = await user.showChangedImage(req.body.imageNum);
+//         return res.json({"parent" : parentImageNum, "parent_image" : parentImage, result});
+//     } catch(err){
+//         return next(err);
+//     }
+// });
 
 router.post('/delete_image', async (req, res, next) => {
     try{
@@ -182,7 +192,10 @@ router.post('/save_preference', async (req, res, next) => {
 
 router.post('/show_user_preference', async (req, res, next) => {
     try{
-        var result = await user.showUserPreference(req.body.id);                
+        var result = await user.showUserPreference(req.body.id);     
+        if (result == null){
+            return res.json({"result" : false});
+        }         
         data = JSON.parse(result.image);  
         result.image = data;
         return res.json({"result" : result});
@@ -200,20 +213,29 @@ router.post('/show_preference', async (req, res, next) => {
     }
 });
 
-router.post('/add_preference', async (req, res, next) => {
+router.post('/edit_preference', async (req, res, next) => {
     try{
-        var result = await user.showPreference(req.body.id);                
-        data = JSON.parse(result.image);  
-        data.shift();
-        data.push(req.body.image);
-
-        var add = await user.addPreference(req.body.id, data);
-
+        var result = await user.editPreference(req);
         return res.json({"result" : true});
     } catch(err){
         return next(err);
     }
 });
+
+// router.post('/add_preference', async (req, res, next) => {
+//     try{
+//         var result = await user.showPreference(req.body.id);                
+//         data = JSON.parse(result.image);  
+//         data.shift();
+//         data.push(req.body.image);
+
+//         var add = await user.addPreference(req.body.id, data);
+
+//         return res.json({"result" : true});
+//     } catch(err){
+//         return next(err);
+//     }
+// });
 
 router.post('/find_id', async (req, res, next) => {
     try{
@@ -239,6 +261,259 @@ router.post('/reset_password', async (req, res, next) => {
     } catch(err){
         return next(err);
     }
+});
+
+router.post('/dummy', (req, res, next) => {
+    models.images.findOne({
+        where: {
+            imageNum : req.body.imageNum
+        }
+    })
+    .then(result => {
+        return res.json({"result": result});
+    })
+    .catch(err => {
+        return next(err);
+    })
+});
+
+router.post('/show_changed_image', async (req, res, next) => {
+    try{
+        var result = await image.showChangedImage(req.body.id, req.body.imageNum);   
+        var len = result.length;
+
+        if (len == 0){
+            return res.json({"result" : false});
+        }         
+        for (var i = 0; i < result.length; i++){
+            var data = JSON.parse(result[i].data);  
+            result[i].data = data;
+        }
+        return res.json({"result" : result});
+    } catch(err){
+        return next(err);
+    }
+});
+
+router.get('/downloadFurniture/:image', async (req, res, next) => {
+    try{
+        var imageData = await user.showFurnitureImage(req.params.image);
+        console.log(imageData);
+        fs.readFile(imageData.furniture, (err, data) => {
+            process.on('uncaughtException', (err) => {
+                console.error(err);
+                return res.json();
+            })
+            res.writeHead(200, {"Content-Type": "image/jpeg"});
+            res.write(data);
+            
+            res.end();          
+        });
+    } catch(err){
+        return next(err);
+    } 
+});
+
+router.post('/changed_image_dummy', async (req, res, next) => {
+    // var changedList = {0:{changeFile: null}, 1:{changeFile:null, changeJSON:null}};
+    var changedList = [{changedFile: null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}, {changedFile:null, changedJSON:null}];
+
+    changedList[0].changedFile = 62;
+    changedList[1].changedFile = 63;
+    changedList[1].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[2].changedFile = 63;
+    changedList[2].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[3].changedFile = 63;
+    changedList[3].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[4].changedFile = 63;
+    changedList[4].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[5].changedFile = 63;
+    changedList[5].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[6].changedFile = 63;
+    changedList[6].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[7].changedFile = 63;
+    changedList[7].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    changedList[8].changedFile = 63;
+    changedList[8].changedJSON = {
+        wallColor : [233, 242, 172],
+        wallPicture : 63,
+        floorColor : [233, 242, 172],
+        floorPicture : 64,
+        changedFurniture : [
+            {
+                start : [234, 457], color : [233, 242, 172]
+            },
+            {
+                start : [1023, 678], color : [233, 242, 172]
+            }
+        ],
+        recommendFurniture : [
+            {
+                start : [234, 457], pictureList : [65, 66, 67]
+            },
+            {
+                start : [1023, 678], pictureList : [68, 69, 70]
+            }
+        ],
+        recommendMore : [71, 72]
+    };
+    // var list = JSON.stringify(changedList[1].changedJSON);
+    // console.log(list);
+    return res.json({"result" : changedList});
 });
 
 module.exports = router;

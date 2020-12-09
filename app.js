@@ -5,10 +5,11 @@ const models = require('./models/index');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error_handler');
-const schedule = require('node-schedule');
-const db = require('./models');
-const multer = require('multer');
-// const MlWrapper = require('./util/IOU-ML/mlWrapper');
+
+const CronJob = require('cron').CronJob;
+const image = require('./util/image');
+const user = require('./util/user');
+const MlWrapper = require('./util/IOU-ML/mlWrapper');
 
 var running = [];
 module.exports.running = running;
@@ -40,49 +41,74 @@ app.use('/hot_board', require('./routes/hot_board'));
 app.use('/comment', require('./routes/comment'));
 app.use('/recommend', require('./routes/recommend'));
 
-// ml = new MlWrapper();
-// schedule.scheduleJob("*/5 * * * * *", () => {
-//     console.log("HI");
-//     if(running.length){
-//         var imageNum = running.shift();
-//         db.images.findOne({
-//             where: {
-//                 imageNum: imageNum
-//             }
-//         })
-//         .then(result => {       
-//             ml.getStyleChangedImage(result.dataValues.image, [""]).then(
-//                 (data) => {
-//                     var len = data.length;
-//                     var loop = data[len - 1];
-//                     setTimeout(() => {
-//                         for(var i = len - 2; i > len - loop - 2; i--){
-//                             console.log("WHY");
-//                             db.changed_images.create({
-//                                 user: result.dataValues.user,
-//                                 parentImage: result.dataValues.imageNum,
-//                                 image: data[i]
-//                             })
-//                             .then(result => {       
-//                                 console.log(result.dataValues);
-//                             })
-//                             .catch(err => {
-//                                 console.log(err);
-//                             })
-//                         }
-//                         console.log("success");     
-//                     }, 1000);
-//                 },
-//                 (err) => {
-//                     console.log(err);
-//                 }
-//             )               
-//         })
-//         .catch(err => {
-//             console.log(err);
-//         })
-//     }    
-// });
+ml = new MlWrapper();
+const uploadStart = async () => {
+    console.log('Upload start');
+    if (running.length){
+        console.log('Upload data exist');
+        var imageNum = running.shift();
+        var parentImage = await image.findImage(imageNum);
+        var tempPref = await user.showUserPreference(parentImage.user);
+        var index = JSON.parse(tempPref.image);
+        var prefImage = [];
+
+        for (var i = 0; i < index.length; i++){
+            var temp = await image.findImage(index[i]);
+            prefImage.push(temp.image);
+        }
+
+        console.log(parentImage.image, prefImage, parentImage.lightColor);
+        ml.requestServiceStart(parentImage.image, prefImage, parentImage.lightColor);
+    }
+}
+const uploadStop = () => console.log('Upload stopped');
+const upload = new CronJob("*/5 * * * * *", uploadStart, uploadStop, false, 'Asia/Seoul');
+setTimeout(() => upload.start(), 3000);
+
+const downloadStart = async () => {
+    console.log('Download start');
+    ml.checkServiceEnd().then(async (changedList)=>{
+        if(changedList.length){
+            console.log('Download data exist');
+            var parentImage = await image.findImageByLink(changedList[0].changedFile);
+            var tempLink;
+            var tempJson;
+            var result;
+            var wallImage;
+            var floorImage;
+            
+            for (var i = 1; i < 9; i++){ // save changed image
+                var furniture;
+
+                wallImage = await image.findImageByLink(changedList[i].changedJson.wallPicture);
+                floorImage = await image.findImageByLink(changedList[i].changedJson.floorPicture);
+                
+                changedList[i].changedJson.wallPicture = wallImage.imageNum;
+                changedList[i].changedJson.floorPicture = floorImage.imageNum;
+
+                tempLink = changedList[i].changedFile;
+                tempJson = JSON.stringify(changedList[i].changedJson);
+                result = await image.saveChangedImage(parentImage.imageNum, parentImage.user, tempLink, tempJson);
+
+                for (var j = 0; j < changedList[i].changedJson.recommendFurniture.length; j++){ // save changedFurniture
+                    var rFurniture = [];
+                    for (var k = 0; k < changedList[i].changedJson.recommendFurniture[j].link.length; k++){
+                        furniture = await image.saveFurniture(result.imageNum, result.user, changedList[i].changedJson.recommendFurniture[j].link[k]);
+                        rFurniture.push(furniture.furnitureNum);
+                    }
+                    changedList[i].changedJson.recommendFurniture[j].link = rFurniture;
+                }                
+
+                tempJson = JSON.stringify(changedList[i].changedJson);
+                console.log(tempJson);
+                result = await image.editImageData(result.imageNum, tempJson);
+            }
+        }        
+    });
+}
+const downloadStop = () => console.log('Download stopped');
+const download = new CronJob("*/5 * * * * *", downloadStart, downloadStop, false, 'Asia/Seoul');
+setTimeout(() => download.start(), 3000);
 
 app.use([errorHandler.logHandler, errorHandler.httpSender]);
 

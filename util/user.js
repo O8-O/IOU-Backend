@@ -41,6 +41,9 @@ function errorWrapper(errorType, err){
         case 110:
             err.message = "Fail to update password";
             break;
+        case 111:
+            err.message = "Fail to update preference";
+            break;
     }
     err.type = errorType;
     return err;
@@ -95,7 +98,8 @@ function saveImage(req){
         setTimeout(() => {
             db.images.create({
                 user: req.body.id,
-                image: req.file.path
+                image: req.file.path,
+                lightColor: req.body.lightColor
             })
             .then(result => {       
                 resolve(result.dataValues);
@@ -103,7 +107,7 @@ function saveImage(req){
             .catch(err => {
                 reject(errorWrapper(104));
             })
-        }, 100);
+        }, 500);
     });
 }
 
@@ -144,14 +148,15 @@ function showOneImage(imageNum){
     });
 }
 
-function showChangedImage(imageNum){
+function showParentImage(id){
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            db.changed_images.findAll({
+        setTimeout(() => {         
+            db.images.findAll({
                 where: {
-                    parentImage: imageNum
+                    user: id,
+                    parentImage: null
                 },
-                attributes: ['imageNum', 'image']
+                attributes: ['imageNum', 'image', 'lightColor'] 
             })
             .then(result => {       
                 resolve(result);
@@ -162,6 +167,25 @@ function showChangedImage(imageNum){
         }, 100);
     });
 }
+
+// function showChangedImage(imageNum){
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             db.changed_images.findAll({
+//                 where: {
+//                     parentImage: imageNum
+//                 },
+//                 attributes: ['imageNum', 'image']
+//             })
+//             .then(result => {       
+//                 resolve(result);
+//             })
+//             .catch(err => {
+//                 reject(errorWrapper(105));
+//             })
+//         }, 100);
+//     });
+// }
 
 function deleteImage(link){
     return new Promise((resolve, reject) => {
@@ -215,10 +239,13 @@ function showUserPreference(id){
                 }
             })
             .then(result => { 
+                if (result == null){
+                    resolve(result);
+                }
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(errorWrapper(101));
+                reject(errorWrapper(0, err));
             })
         }, 100);
     });
@@ -243,28 +270,52 @@ function showPreference(){
     });
 }
 
-function addPreference(id, newData){
+function editPreference(req){
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            list = JSON.stringify(newData);
+        setTimeout(() => {         
+            list = JSON.stringify(req.body.list);
+
             db.preferences.update(
                 {
                     image: list
                 },
-                {                
-                where: {                    
-                    ID: id
-                }  
+                {
+                where: {
+                    ID: req.body.id
+                }   
             })
-            .then(result => { 
+            .then(result => {       
                 resolve(result.dataValues);
             })
             .catch(err => {
-                reject(errorWrapper(109));
+                reject(errorWrapper(111));
             })
         }, 100);
     });
 }
+
+// function addPreference(id, newData){
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             list = JSON.stringify(newData);
+//             db.preferences.update(
+//                 {
+//                     image: list
+//                 },
+//                 {                
+//                 where: {                    
+//                     ID: id
+//                 }  
+//             })
+//             .then(result => { 
+//                 resolve(result.dataValues);
+//             })
+//             .catch(err => {
+//                 reject(errorWrapper(109));
+//             })
+//         }, 100);
+//     });
+// }
 
 function findUserByEmail(email){
     return new Promise((resolve, reject) => {
@@ -311,6 +362,24 @@ function setPassword(id, password){
     });
 }
 
+function showFurnitureImage(furnitureNum){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            db.furnitures.findOne({
+                where: {
+                    furnitureNum: furnitureNum
+                }
+            })
+            .then(result => {     
+                resolve(result.dataValues);
+            })
+            .catch(err => {
+                reject(errorWrapper(105));
+            })
+        }, 100);
+    });
+}
+
 module.exports = {
     encryptPW: encryptPW,
     findUserByID: findUserByID,
@@ -319,12 +388,15 @@ module.exports = {
     saveImage: saveImage,
     showAllImage: showAllImage,
     showOneImage: showOneImage,
-    showChangedImage: showChangedImage,
+    showParentImage: showParentImage,
+    // showChangedImage: showChangedImage,
     deleteImage: deleteImage,
     savePreference: savePreference,
     showUserPreference: showUserPreference,
     showPreference: showPreference,
-    addPreference: addPreference,
+    editPreference: editPreference,
+    // addPreference: addPreference,
     findUserByEmail: findUserByEmail,
-    setPassword: setPassword
+    setPassword: setPassword,
+    showFurnitureImage: showFurnitureImage
 }

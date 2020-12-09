@@ -1,8 +1,8 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('images', {
-            imageNum: {
+        return queryInterface.createTable('furnitures', {
+            furnitureNum: {
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
                 allowNull: false,
@@ -12,18 +12,12 @@ module.exports = {
                 type: Sequelize.STRING(20),
                 allowNull: false
             },
-            image: {
+            furniture: {
                 type: Sequelize.TEXT,
                 allowNull: false
             },
             parentImage: {
                 type: Sequelize.INTEGER,
-            },
-            data: {
-                type: Sequelize.TEXT
-            },
-            lightColor: {
-                type: Sequelize.STRING
             },
             createdAt: {                
                 type: Sequelize.DATE
@@ -34,6 +28,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('images');
+        return queryInterface.dropTable('furnitures');
     }
 };
